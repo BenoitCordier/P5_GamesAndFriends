@@ -9,7 +9,7 @@ use Faker\Factory;
 use Faker\Generator as FakerGenerator;
 use Generator;
 
-class AppFixtures extends Fixture
+class UserFixtures extends Fixture
 {
     /**
     * @var Generator
@@ -36,4 +36,5 @@ class AppFixtures extends Fixture
 
         $manager->flush();
     }
+
 }

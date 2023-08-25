@@ -16,7 +16,7 @@ class Game
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'gameName', type: 'string', length: 255, unique: true)]
+    #[ORM\Column(name: 'game_name', type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
     private ?string $gameName = null;
 
