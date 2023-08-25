@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity('email')]
 class User
 {
     #[ORM\Id]
@@ -13,19 +16,33 @@ class User
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 20)]
+    #[ORM\Column(length: 30)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min:3,
+        max:30,
+        minMessage: "Votre nom d'utilisateur doit contenir plus de {{ limit }} lettres.",
+        maxMessage: "Votre nom d'utilisateur doit contenir moins de {{ limit }} lettres.",
+    )]
     private ?string $userName = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: 'email', type: 'string', length: 255, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Email(
+        message: 'Veuillez entrer un email valide.',
+    )]
     private ?string $email = null;
 
     public function getId(): ?int

@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\GameRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: GameRepository::class)]
+#[UniqueEntity('gameName')]
 class Game
 {
     #[ORM\Id]
@@ -13,7 +16,8 @@ class Game
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: 'gameName', type: 'string', length: 255, unique: true)]
+    #[Assert\NotBlank]
     private ?string $gameName = null;
 
     public function getId(): ?int
