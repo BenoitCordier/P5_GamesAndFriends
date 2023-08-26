@@ -102,6 +102,12 @@ class GameController extends AbstractController
         ]);
     }
 
+    /**
+     * Delete an existing game
+     *
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     #[Route('/game/delete/{id}', name: 'game.delete', methods: ['GET'])]
     public function delete(EntityManagerInterface $manager, Game $game): Response
     {

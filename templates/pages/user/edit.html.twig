@@ -1,0 +1,36 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mt-4">
+        Modifier un utilisateur
+    </h1>
+
+    <a href="{{ path('user.index') }}" class="btn btn-outline-primary">
+        Revenir à la liste
+    </a>
+
+    {{ form_start(form) }}
+
+    <div class="form-group">
+        {{ form_label(form.userName) }}
+        {{ form_widget(form.userName) }}
+
+        {{ form_label(form.firstName) }}
+        {{ form_widget(form.firstName) }}
+
+        {{ form_label(form.lastName) }}
+        {{ form_widget(form.lastName) }}
+        
+        {{ form_label(form.email) }}
+        {{ form_widget(form.email) }}
+
+        {{ form_label(form.password) }}
+        {{ form_widget(form.password) }}
+    <div class="form-group">
+    {{ form_row(form.submit) }}
+    </div>
+
+    {{ form_end(form) }}
+</div>
+{% endblock %}

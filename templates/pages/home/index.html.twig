@@ -5,6 +5,11 @@
 {% block body %}
 <div class="container mt-4">
     <div class="jumbotron">
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-dismissible alert-success mt-4">
+            {{ message }}
+        </div>
+    {% endfor %}
         <h1 class="display-4">Bienvenue sur Games & Friends</h1>
         <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.
@@ -23,7 +28,7 @@
         <hr class="my-4">
         <p>Pour commencer à utiliser l'application, rendez-vous sur le formulaire d'inscription !</p>
         <p class="lead">
-        <a class="btn btn-outline-primary" href="#" role="button">Inscription</a>
+        <a class="btn btn-outline-primary" href="{{ path('user.new') }}" role="button">Inscription</a>
         </p>
     </div>
 </div>

@@ -34,16 +34,16 @@ class User
     #[Assert\NotBlank]
     private ?string $lastName = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
-    private ?string $password = null;
-
     #[ORM\Column(name: 'email', type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Email(
         message: 'Veuillez entrer un email valide.',
     )]
     private ?string $email = null;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    private ?string $password = null;
 
     public function getId(): ?int
     {
