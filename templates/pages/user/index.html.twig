@@ -11,6 +11,9 @@
                 <p>{{ users.getTotalItemCount }} utilisateurs sont inscrits sur le site.</p>
             </div>
         </small>
+        <div class="navigation">
+            {{ knp_pagination_render(users) }}
+        </div>
         <table class="table table-hover">
             <thead>
                 <tr>
