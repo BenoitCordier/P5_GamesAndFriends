@@ -18,7 +18,7 @@ class GameType extends AbstractType
             ->add('gameName', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'minlength' => '2',
+                    'minlength' => '3',
                     'maxlenght' => '50'
                 ],
                 'label' => 'Nom du jeu',
@@ -26,7 +26,7 @@ class GameType extends AbstractType
                     'class' => 'form-label mt-4'
                 ],
                 'constraints' => [
-                    new Assert\Length(['min' => 2, 'max' => 50]),
+                    new Assert\Length(['min' => 3, 'max' => 50]),
                     new Assert\NotBlank()
                 ]
             ])
