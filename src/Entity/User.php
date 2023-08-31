@@ -3,64 +3,76 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email')]
-class User
+#[ORM\EntityListeners(['App\EntityListener\UserListener'])]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 30)]
+    #[ORM\Column(length: 180, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Length(
         min:3,
-        max:30,
-        minMessage: "Votre nom d'utilisateur doit contenir plus de {{ limit }} lettres.",
-        maxMessage: "Votre nom d'utilisateur doit contenir moins de {{ limit }} lettres.",
+        max:180
+    )]
+    #[Assert\Email()]
+    private ?string $email = null;
+
+    #[ORM\Column]
+    #[Assert\NotNull()]
+    private array $roles = [];
+
+    private ?string $plainPassword = null;
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column]
+    #[Assert\NotBlank]
+    private ?string $password = null;
+
+    #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min:3,
+        max:50,
+        minMessage: "Votre nom d'utilisateur doit contenir plus de {{ limit }} caractères.",
+        maxMessage: "Votre nom d'utilisateur doit contenir moins de {{ limit }} caractères."
     )]
     private ?string $userName = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
+    #[Assert\Length(
+        min:2,
+        max:255
+    )]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
+    #[Assert\Length(
+        min:2,
+        max:255
+    )]
     private ?string $lastName = null;
 
-    #[ORM\Column(name: 'email', type: 'string', length: 255, unique: true)]
-    #[Assert\NotBlank]
-    #[Assert\Email(
-        message: 'Veuillez entrer un email valide.',
-    )]
-    private ?string $email = null;
-
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
-    private ?string $password = null;
-
-    #[ORM\ManyToMany(targetEntity: Game::class, mappedBy: 'players')]
-    private Collection $games;
-
-    #[ORM\OneToMany(mappedBy: 'eventAdmin', targetEntity: Event::class)]
-    private Collection $adminEvents;
-
-    #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'eventPlayer')]
-    private Collection $events;
+    #[ORM\Column]
+    #[Assert\NotNull()]
+    private \DateTimeImmutable $createdAt;
 
     public function __construct()
     {
-        $this->games = new ArrayCollection();
-        $this->adminEvents = new ArrayCollection();
-        $this->events = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -104,18 +116,6 @@ class User
         return $this;
     }
 
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): static
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
     public function getEmail(): ?string
     {
         return $this->email;
@@ -129,85 +129,78 @@ class User
     }
 
     /**
-     * @return Collection<int, Game>
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
      */
-    public function getGames(): Collection
+    public function getUserIdentifier(): string
     {
-        return $this->games;
+        return (string) $this->email;
     }
 
-    public function addGame(Game $game): static
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
     {
-        if (!$this->games->contains($game)) {
-            $this->games->add($game);
-            $game->addPlayer($this);
-        }
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
 
         return $this;
     }
 
-    public function removeGame(Game $game): static
+    public function getPlainPassword()
     {
-        if ($this->games->removeElement($game)) {
-            $game->removePlayer($this);
-        }
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Event>
+     * @see PasswordAuthenticatedUserInterface
      */
-    public function getAdminEvents(): Collection
+    public function getPassword(): string
     {
-        return $this->adminEvents;
+        return $this->password;
     }
 
-    public function addAdminEvent(Event $adminEvent): static
+    public function setPassword(string $password): static
     {
-        if (!$this->adminEvents->contains($adminEvent)) {
-            $this->adminEvents->add($adminEvent);
-            $adminEvent->setEventAdmin($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAdminEvent(Event $adminEvent): static
-    {
-        if ($this->adminEvents->removeElement($adminEvent)) {
-            // set the owning side to null (unless already changed)
-            if ($adminEvent->getEventAdmin() === $this) {
-                $adminEvent->setEventAdmin(null);
-            }
-        }
+        $this->password = $password;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Event>
+     * @see UserInterface
      */
-    public function getEvents(): Collection
+    public function eraseCredentials(): void
     {
-        return $this->events;
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
-    public function addEvent(Event $event): static
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        if (!$this->events->contains($event)) {
-            $this->events->add($event);
-            $event->addEventPlayer($this);
-        }
-
-        return $this;
+        return $this->createdAt;
     }
 
-    public function removeEvent(Event $event): static
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
-        if ($this->events->removeElement($event)) {
-            $event->removeEventPlayer($this);
-        }
+        $this->createdAt = $createdAt;
 
         return $this;
     }

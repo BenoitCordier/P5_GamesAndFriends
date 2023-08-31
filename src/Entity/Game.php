@@ -28,15 +28,11 @@ class Game
     )]
     private ?string $gameName = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'games')]
-    private Collection $players;
-
     #[ORM\OneToMany(mappedBy: 'eventGame', targetEntity: Event::class)]
     private Collection $events;
 
     public function __construct()
     {
-        $this->players = new ArrayCollection();
         $this->events = new ArrayCollection();
     }
 
@@ -57,28 +53,9 @@ class Game
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getPlayers(): Collection
+    public function __toString()
     {
-        return $this->players;
-    }
-
-    public function addPlayer(User $player): static
-    {
-        if (!$this->players->contains($player)) {
-            $this->players->add($player);
-        }
-
-        return $this;
-    }
-
-    public function removePlayer(User $player): static
-    {
-        $this->players->removeElement($player);
-
-        return $this;
+        return $this->gameName;
     }
 
     /**

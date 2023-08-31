@@ -52,9 +52,17 @@ class Event
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'events')]
     private Collection $eventPlayer;
 
+    #[ORM\Column]
+    #[Assert\NotNull()]
+    #[Assert\Positive]
+    #[Assert\GreaterThanOrEqual(2)]
+    private ?int $eventMaxPlayer = null;
+
     public function __construct()
     {
         $this->eventPlayer = new ArrayCollection();
+        $this->eventStartAt = new \DateTimeImmutable();
+        $this->eventEndAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -154,6 +162,18 @@ class Event
     public function removeEventPlayer(User $eventPlayer): static
     {
         $this->eventPlayer->removeElement($eventPlayer);
+
+        return $this;
+    }
+
+    public function getEventMaxPlayer(): ?int
+    {
+        return $this->eventMaxPlayer;
+    }
+
+    public function setEventMaxPlayer(int $eventMaxPlayer): static
+    {
+        $this->eventMaxPlayer = $eventMaxPlayer;
 
         return $this;
     }
