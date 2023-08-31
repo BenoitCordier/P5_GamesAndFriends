@@ -23,7 +23,7 @@ class GameController extends AbstractController
      * @return Response
      */
 
-    #[Route('/game', name: 'game.index', methods: ['GET'])]
+    #[Route('/admin/game', name: 'game.index', methods: ['GET'])]
     public function index(GameRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
         $games = $paginator->paginate(
@@ -32,7 +32,7 @@ class GameController extends AbstractController
             10
         );
 
-        return $this->render('pages/game/index.html.twig', [
+        return $this->render('pages/admin/game/index.html.twig', [
             'games' => $games
         ]);
     }
@@ -44,7 +44,7 @@ class GameController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
-    #[Route('/game/new', name: 'game.new', methods: ['GET', 'POST'])]
+    #[Route('/admin/game/new', name: 'game.new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $game = new Game();
@@ -65,7 +65,7 @@ class GameController extends AbstractController
             return $this->redirectToRoute('game.index');
         }
 
-        return $this->render('pages/game/new.html.twig', [
+        return $this->render('pages/admin/game/new.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -77,7 +77,7 @@ class GameController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
-    #[Route('/game/edit/{id}', name: 'game.edit', methods: ['GET', 'POST'])]
+    #[Route('/admin/game/edit/{id}', name: 'game.edit', methods: ['GET', 'POST'])]
     public function edit(Game $game, Request $request, EntityManagerInterface $manager): Response
     {
         $form = $this->createForm(GameType::class, $game);
@@ -97,7 +97,7 @@ class GameController extends AbstractController
             return $this->redirectToRoute('game.index');
         }
 
-        return $this->render('pages/game/edit.html.twig', [
+        return $this->render('pages/admin/game/edit.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -108,7 +108,7 @@ class GameController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
-    #[Route('/game/delete/{id}', name: 'game.delete', methods: ['GET'])]
+    #[Route('/admin/game/delete/{id}', name: 'game.delete', methods: ['GET'])]
     public function delete(EntityManagerInterface $manager, Game $game): Response
     {
         $manager->remove($game);

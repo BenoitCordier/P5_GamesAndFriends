@@ -3,11 +3,11 @@
 {% block body %}
 <div class="container mt-4">
     <h1 class="mt-4">
-        Nouvel utilisateur
+        Modifier un utilisateur
     </h1>
 
-    <a href="{{ path('home.index') }}" class="btn btn-outline-primary">
-        Revenir à l'accueil
+    <a href="{{ path('user.index') }}" class="btn btn-outline-primary">
+        Revenir à la liste
     </a>
 
     {{ form_start(form) }}
@@ -19,6 +19,7 @@
             {{ form_errors(form.userName) }}
         </div>
     </div>
+
     <div class="form-group">
         {{ form_label(form.firstName) }}
         {{ form_widget(form.firstName) }}
@@ -26,6 +27,7 @@
             {{ form_errors(form.firstName) }}
         </div>
     </div>
+
     <div class="form-group">
         {{ form_label(form.lastName) }}
         {{ form_widget(form.lastName) }}
@@ -33,25 +35,28 @@
             {{ form_errors(form.lastName) }}
         </div>
     </div>
+
+    <div class="form-group">
+        {{ form_label(form.email) }}
+        {{ form_widget(form.email) }}
+        <small id="emailHelp" class="form-text text-muted">Votre adresse mail ne sera utilisée qu'à des fins d'authentifications et ne sera jamais communiqué à quiconque.</small>
+        <div class="form-error">
+            {{ form_errors(form.email) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_widget(form.plainPassword) }}
+        <div class="form-error">
+            {{ form_errors(form.plainPassword) }}
+        </div>
+    </div>
+
     <div class="form-group">
         {{ form_label(form.games) }}
         {{ form_widget(form.games) }}
         <div class="form-error">
             {{ form_errors(form.games) }}
-        </div>
-    </div>
-    <div class="form-group">
-        {{ form_label(form.email) }}
-        {{ form_widget(form.email) }}
-        <div class="form-error">
-            {{ form_errors(form.email) }}
-        </div>
-    </div>
-    <div class="form-group">
-        {{ form_label(form.password) }}
-        {{ form_widget(form.password) }}
-        <div class="form-error">
-            {{ form_errors(form.password) }}
         </div>
     </div>
 

@@ -47,9 +47,9 @@ class AppFixtures extends Fixture
             ->setEmail($this->faker->email())
             ->setPlainPassword('password');
 
-            /*for ($k = 1; $k < mt_rand(1, 5); $k++) {
+            for ($k = 1; $k < mt_rand(1, 5); $k++) {
                 $user->addGame($games[mt_rand(0, count($games) - 1)]);
-            }*/
+            }
             $users[] = $user;
             $manager->persist($user);
         }

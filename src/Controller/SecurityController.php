@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\SigninType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,6 +15,20 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    #[Route('/admin/user', name: 'user.index', methods: ['GET'])]
+    public function index(UserRepository $repository, PaginatorInterface $paginator, Request $request): Response
+    {
+        $users = $paginator->paginate(
+            $repository->findAll(),
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render('pages/admin/user/index.html.twig', [
+            'users' => $users
+        ]);
+    }
+
     #[Route('/login', name: 'security.login', methods: ['GET', 'POST'])]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {

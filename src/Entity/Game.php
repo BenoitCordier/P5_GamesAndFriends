@@ -31,9 +31,13 @@ class Game
     #[ORM\OneToMany(mappedBy: 'eventGame', targetEntity: Event::class)]
     private Collection $events;
 
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'games')]
+    private Collection $users;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -83,6 +87,33 @@ class Game
             if ($event->getEventGame() === $this) {
                 $event->setEventGame(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeGame($this);
         }
 
         return $this;
