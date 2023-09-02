@@ -1,0 +1,69 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mt-4">
+        Modifier un évènement
+    </h1>
+
+    <a href="{{ path('event.index') }}" class="btn btn-outline-primary">
+        Revenir à la liste
+    </a>
+
+    {{ form_start(form) }}
+
+    <div class="form-group">
+        {{ form_label(form.eventName) }}
+        {{ form_widget(form.eventName) }}
+        <div class="form-error">
+            {{ form_errors(form.eventName) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.eventDescription) }}
+        {{ form_widget(form.eventDescription) }}
+        <div class="form-error">
+            {{ form_errors(form.eventDescription) }}
+        </div>
+    </div>
+
+        <div class="form-group">
+        {{ form_label(form.eventStartAt) }}
+        {{ form_widget(form.eventStartAt) }}
+        <div class="form-error">
+            {{ form_errors(form.eventStartAt) }}
+        </div>
+    </div>
+
+        <div class="form-group">
+        {{ form_label(form.eventEndAt) }}
+        {{ form_widget(form.eventEndAt) }}
+        <div class="form-error">
+            {{ form_errors(form.eventEndAt) }}
+        </div>
+    </div>
+
+        <div class="form-group">
+        {{ form_label(form.eventMaxPlayer) }}
+        {{ form_widget(form.eventMaxPlayer) }}
+        <div class="form-error">
+            {{ form_errors(form.eventMaxPlayer) }}
+        </div>
+    </div>
+
+        <div class="form-group">
+        {{ form_label(form.eventGame) }}
+        {{ form_widget(form.eventGame) }}
+        <div class="form-error">
+            {{ form_errors(form.eventGame) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+    {{ form_row(form.submit) }}
+    </div>
+
+    {{ form_end(form) }}
+</div>
+{% endblock %}

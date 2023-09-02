@@ -39,11 +39,11 @@ class Event
 
     #[ORM\Column]
     #[Assert\NotNull()]
-    private ?\DateTimeImmutable $eventStartAt = null;
+    private ?\DateTime $eventStartAt = null;
 
     #[ORM\Column]
     #[Assert\NotNull()]
-    private ?\DateTimeImmutable $eventEndAt = null;
+    private ?\DateTime $eventEndAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'adminEvents')]
     #[ORM\JoinColumn(nullable: false)]
@@ -61,8 +61,8 @@ class Event
     public function __construct()
     {
         $this->eventPlayer = new ArrayCollection();
-        $this->eventStartAt = new \DateTimeImmutable();
-        $this->eventEndAt = new \DateTimeImmutable();
+        $this->eventStartAt = new \DateTime();
+        $this->eventEndAt = new \DateTime();
     }
 
     public function getId(): ?int
@@ -106,24 +106,24 @@ class Event
         return $this;
     }
 
-    public function getEventStartAt(): ?\DateTimeImmutable
+    public function getEventStartAt(): ?\DateTime
     {
         return $this->eventStartAt;
     }
 
-    public function setEventStartAt(\DateTimeImmutable $eventStartAt): static
+    public function setEventStartAt(\DateTime $eventStartAt): static
     {
         $this->eventStartAt = $eventStartAt;
 
         return $this;
     }
 
-    public function getEventEndAt(): ?\DateTimeImmutable
+    public function getEventEndAt(): ?\DateTime
     {
         return $this->eventEndAt;
     }
 
-    public function setEventEndAt(\DateTimeImmutable $eventEndAt): static
+    public function setEventEndAt(\DateTime $eventEndAt): static
     {
         $this->eventEndAt = $eventEndAt;
 

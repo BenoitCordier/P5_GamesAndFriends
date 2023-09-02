@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Game;
 use App\Entity\User;
 use App\Form\SigninType;
 use App\Repository\UserRepository;
@@ -53,7 +54,9 @@ class SecurityController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
             $user = $form->getData();
+            $user->setRoles(['ROLE_USER']);
 
             $manager->persist($user);
             $manager->flush();

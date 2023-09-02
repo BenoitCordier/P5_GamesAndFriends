@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Game;
-use App\Entity\User;
+use App\Entity\Event;
 use Doctrine\ORM\QueryBuilder;
 use App\Repository\GameRepository;
 use Symfony\Component\Form\AbstractType;
@@ -12,52 +12,23 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class SigninType extends AbstractType
+class EventType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                    'minlength' => '3',
-                    'maxlenght' => '180'
-                ],
-                'label' => "Email",
-                'label_attr' => [
-                    'class' => 'form-label mt-4'
-                ],
-                'constraints' => [
-                    new Assert\Length(['min' => 3, 'max' => 180]),
-                    new Assert\Email(),
-                    new Assert\NotBlank()
-                ]
-            ])
-            ->add('plainPassword', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'required' => true,
-                'first_options'  => ['label' => 'Mot de passe'],
-                'second_options' => ['label' => 'Confirmation du mot de passe'],
-                'invalid_message' => 'Les mots de passes ne sont pas identiques.',
-                'options' => [
-                    'attr' => [
-                        'class' => 'password-field form-control'],
-                    'label_attr' => [
-                        'class' => 'form-label mt-4'
-                ]],
-            ])
-            ->add('userName', TextType::class, [
+            ->add('eventName', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                     'minlength' => '3',
                     'maxlenght' => '50'
                 ],
-                'label' => "Nom d'utilisateur",
+                'label' => "Nom de l'évènement",
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
@@ -66,47 +37,72 @@ class SigninType extends AbstractType
                     new Assert\NotBlank()
                 ]
             ])
-            ->add('firstName', TextType::class, [
+            ->add('eventDescription', TextareaType::class, [
                 'attr' => [
-                    'class' => 'form-control',
-                    'minlength' => '2',
-                    'maxlenght' => '255'
+                    'class' => 'form-control'
                 ],
-                'label' => "Prénom",
+                'label' => "Description",
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
                 'constraints' => [
-                    new Assert\Length(['min' => 2, 'max' => 255]),
                     new Assert\NotBlank()
                 ]
             ])
-            ->add('lastName', TextType::class, [
+            ->add('eventStartAt', DateTimeType::class, [
+                'widget' => 'single_text',
                 'attr' => [
-                    'class' => 'form-control',
-                    'minlength' => '2',
-                    'maxlenght' => '255'
+                    'class' => 'form-control'
                 ],
-                'label' => "Nom de famille",
+                'label' => "Date de début",
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
                 'constraints' => [
-                    new Assert\Length(['min' => 2, 'max' => 255]),
+                    new Assert\NotBlank()
+                ]
+
+            ])
+            ->add('eventEndAt', DateTimeType::class, [
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+                'label' => "Date de fin",
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ],
+                'constraints' => [
                     new Assert\NotBlank()
                 ]
             ])
-            ->add('games', EntityType::class, [
+            ->add('eventMaxPlayer', IntegerType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'min' => '1',
+                    'max' => '1000'
+                ],
+                'label' => "Nombre de participants maximum",
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Positive(),
+                    new Assert\LessThanOrEqual(1000)
+                ]
+            ])
+            ->add('eventGame', EntityType::class, [
                 'class' => Game::class,
                 'query_builder' => function (GameRepository $r): QueryBuilder {
                     return $r->createQueryBuilder('i')
                         ->orderBy('i.gameName', 'ASC');
                 },
                 'choice_label' => 'gameName',
-                'multiple' => true,
-                'expanded' => true,
+                'multiple' => false,
+                'expanded' => false,
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-select'
                 ],
                 'label' => "Jeux",
                 'label_attr' => [
@@ -125,7 +121,7 @@ class SigninType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => Event::class,
         ]);
     }
 }
