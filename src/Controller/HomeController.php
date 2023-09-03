@@ -8,10 +8,28 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+    /**
+     * Home page access
+     *
+     * @return Response
+     */
     #[Route('/', name: 'home.index', methods: ['GET'])]
     public function index(): Response
     {
         return $this->render('pages/home/index.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
+
+    /**
+     * Map page access
+     *
+     * @return Response
+     */
+    #[Route('/', name: 'home.map', methods: ['GET'])]
+    public function map(): Response
+    {
+        return $this->render('pages/home/map.html.twig', [
             'controller_name' => 'HomeController',
         ]);
     }

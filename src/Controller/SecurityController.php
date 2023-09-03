@@ -16,7 +16,15 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    #[Route('/admin/user', name: 'user.index', methods: ['GET'])]
+    /**
+     * Show all user registered in the app
+     *
+     * @param UserRepository $repository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
+     */
+    #[Route('/admin/user', name: 'admin.user.index', methods: ['GET'])]
     public function index(UserRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
         $users = $paginator->paginate(
@@ -30,6 +38,12 @@ class SecurityController extends AbstractController
         ]);
     }
 
+    /**
+     * Login method
+     *
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
+     */
     #[Route('/login', name: 'security.login', methods: ['GET', 'POST'])]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -40,12 +54,24 @@ class SecurityController extends AbstractController
         ]);
     }
 
+    /**
+     * Logout method
+     *
+     * @return void
+     */
     #[Route('/logout', name: 'security.logout')]
     public function logout()
     {
         //Blank
     }
 
+    /**
+     * Signin method
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     #[Route('/signin', name: 'security.signin', methods: ['GET', 'POST'])]
     public function signin(Request $request, EntityManagerInterface $manager): Response
     {

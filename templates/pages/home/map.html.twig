@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Games & Friends - Carte{% endblock %}
+
+{% block body %}
+<div class="container">
+	<div id="searchBar">
+		<div>
+			<i class="fa-solid fa-magnifying-glass-plus"></i>
+			<h2><span class="txtOrange">M</span>a recherche</h2>
+		</div>
+		<div>
+			<form id="searchForm">
+				<label for="games"><i class="fa-solid fa-dice-d20"></i> <span class="txtOrange">À</span> quoi
+					voulez-vous jouer
+					?</label>
+				<select id="gameList" name="gameId">
+                {% for gameInfo in game %}
+                    <option
+						value="">
+					</option>
+                {% endfor %}
+				</select>
+				<button class="searchBtnBar" id="submitButton">C'est parti !</button>
+			</form>
+		</div>
+	</div>
+
+	<div id="map">
+	</div>
+</div>
+<script src="public/js/mapScript.js"></script>
+{% endblock %}
