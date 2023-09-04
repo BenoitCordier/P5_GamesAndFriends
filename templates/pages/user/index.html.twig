@@ -31,7 +31,7 @@
                 <td>{{user.createdAt|date('d/m/y H:i')}}</td>
             </tr>
             <tr>
-                <td><button type="button" class="btn btn-outline-primary">Modifier</button></td>
+                <td><a class="btn btn-outline-primary" href="{{ path('user.edit', { id: app.user.id }) }}" role="button">Modifier</a></td>
             </tr>
         </table>
         <table class="table">
@@ -44,7 +44,7 @@
             </tr>
             {% endfor %}
             <tr>
-                <td><button type="button" class="btn btn-outline-primary">Modifier</button></td>
+                <td><a class="btn btn-outline-primary" href="{{ path('user.edit.game', { id: app.user.id }) }}" role="button">Modifier</a></td>
             </tr>
         </table>
         <table class="table">
@@ -70,8 +70,9 @@
                 <td>********</td>
             </tr>
             <tr>
-                <td><button type="button" class="btn btn-outline-primary">Modifier</button></td>
+                <td><a class="btn btn-outline-primary" href="{{ path('user.edit.password', { id: app.user.id }) }}" role="button">Modifier mon mot de passe</a></td>
             </tr>
+
         </table>
     </div>
 {% endblock %}
