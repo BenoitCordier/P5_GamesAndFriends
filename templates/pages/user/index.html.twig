@@ -41,10 +41,11 @@
             {% for game in user.games %}
             <tr>
                 <td scope="row">{{game}}</td>
+                <td><a class="btn btn-outline-primary btn-sm" href="{{ path('user.remove.game', { id: game.id }) }}" role="button">Supprimer</a></td>
             </tr>
             {% endfor %}
             <tr>
-                <td><a class="btn btn-outline-primary" href="{{ path('user.edit.game', { id: app.user.id }) }}" role="button">Modifier</a></td>
+                <td><a class="btn btn-outline-primary" href="{{ path('user.edit.game', { id: app.user.id }) }}" role="button">Ajouter des jeux</a></td>
             </tr>
         </table>
         <table class="table">

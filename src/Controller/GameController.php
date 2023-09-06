@@ -121,5 +121,4 @@ class GameController extends AbstractController
 
         return $this->redirectToRoute('game.index');
     }
-
 }

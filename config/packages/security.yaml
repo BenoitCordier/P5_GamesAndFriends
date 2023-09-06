@@ -19,6 +19,7 @@ security:
             form_login:
                 login_path: security.login
                 check_path: security.login
+                default_target_path: home.map
             logout:
                 path: security.logout
 

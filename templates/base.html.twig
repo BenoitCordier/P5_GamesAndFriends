@@ -5,32 +5,37 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {% block stylesheets %}
+            <!-- Bootswatch -->
             <link 
             href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.1/dist/lux/bootstrap.min.css"
             rel="stylesheet">
-            <link 
-            href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.1/dist/lux/_variable.scss"
-            rel="stylesheet">
+
+            <!-- CSS -->
+            <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
+
         {% endblock %}
 
         {% block javascripts %}
+            <!-- Leaflet -->
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+            <script type="text/javascript" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
         {% endblock %}
     </head>
     <body>
         {% block header %}
-        {% if app.user == null %}
-            {% include "partials/_header.html.twig" %}
-        {% endif %}
-
-        {% if app.user %}
-            {% include "partials/_headerUser.html.twig" %}
-            {% if app.user.roles[0] is same as("ROLE_ADMIN") %}
-                {% include "partials/_headerAdmin.html.twig" %}
-            {% endif %}            
-        {% endif %}
-        
-            
-            
+            {% if app.user == null %}
+                {% include "partials/_header.html.twig" %}
+            {% endif %}
+            {% if app.user %}
+                {% include "partials/_headerUser.html.twig" %}
+                {% if app.user.roles[0] is same as("ROLE_ADMIN") %}
+                    {% include "partials/_headerAdmin.html.twig" %}
+                {% endif %}
+                {% if showEventNav ?? '' %}
+                    {% include "partials/_headerEvent.html.twig" %}
+                {% endif %}
+                
+            {% endif %}
         {% endblock %}
         {% block body %}{% endblock %}
     </body>

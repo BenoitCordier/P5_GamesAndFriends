@@ -17,7 +17,7 @@ class UserPasswordType extends AbstractType
         ->add('plainPassword', PasswordType::class, [
                 'attr' => [
                     'class' => 'password-field form-control'],
-                'label' => 'Mot de passe',
+                'label' => 'Ancien mot de passe',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],

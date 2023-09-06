@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Game;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Form\UserGameType;
 use App\Form\UserPasswordType;
+use App\Repository\GameRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -77,7 +79,7 @@ class UserController extends AbstractController
             );
 
             return $this->redirectToRoute('user.index', [
-                'id' => $this->getUser()->getId()
+                'id' => $this->$user->getId()
             ]);
         }
 
@@ -142,6 +144,14 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * Allow user to add new games to their profiles
+     *
+     * @param User $user
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     #[Route('/user/editGame/{id}', name: 'user.edit.game', methods: ['GET', 'POST'])]
     public function editGame(User $user, Request $request, EntityManagerInterface $manager): Response
     {
@@ -162,8 +172,12 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $form->getData();
-
+            $games = $form->getData();
+            foreach ($games as $game) {
+                foreach($game->getIterator() as $u => $uniqueGame) {
+                    $user->addGame($uniqueGame);
+                }
+            }
             $manager->persist($user);
             $manager->flush();
 
@@ -180,6 +194,36 @@ class UserController extends AbstractController
         return $this->render('/pages/user/editGame.html.twig', [
             'form' => $form->createView()
         ]);
+    }
 
+    #[Route('/user/removeGame/{id}', name: 'user.remove.game', methods:['GET', 'POST'])]
+    public function removeGame(User $user, EntityManagerInterface $manager, GameRepository $gameRepository, int $id): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('security.login');
+        }
+
+        if ($this->getUser() !== $user) {
+            $unauthorisedUserId = $this->getUser()->getId();
+
+            return $this->redirectToRoute('user.index', [
+                'id' => $unauthorisedUserId
+            ]);
+        }
+
+        $game = $gameRepository->find($id);
+
+        $user->removeGame($game);
+
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            'Jeu supprimé avec succès !'
+        );
+
+        return $this->redirectToRoute('user.index', [
+            'id' => $this->getUser()->getId()
+        ]);
     }
 }

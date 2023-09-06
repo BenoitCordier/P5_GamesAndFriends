@@ -16,9 +16,7 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home.index', methods: ['GET'])]
     public function index(): Response
     {
-        return $this->render('pages/home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
+        return $this->render('pages/home/index.html.twig');
     }
 
     /**
@@ -26,11 +24,9 @@ class HomeController extends AbstractController
      *
      * @return Response
      */
-    #[Route('/', name: 'home.map', methods: ['GET'])]
+    #[Route('/map', name: 'home.map', methods: ['GET'])]
     public function map(): Response
     {
-        return $this->render('pages/home/map.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
+        return $this->render('pages/home/map.html.twig');
     }
 }

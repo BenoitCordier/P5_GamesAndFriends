@@ -18,31 +18,30 @@ class Map
         this.iconActive = new this.LeafIcon({
             iconUrl: 'img/iconActive.png'
         });
+        /*
         this.url = 'http://localhost/Games&Friends/index.php?action=search';
         this.searchBtn = document.getElementById('submitButton');
         this.searchBtn.addEventListener('click', (e) => {
             e.preventDefault();
             this.gameId = document.getElementById('gameList').value;
             console.log(this.postData());
-        });
+        });*/
 
         this.createMap();
     }
 
-//Cr�ation de la carte
+// Map creation
 
     createMap()
     {
-        L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
-        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        subdomains: 'abcd',
-        minZoom: 0,
-        maxZoom: 20,
-        ext: 'png'
+        L.tileLayer('https://tiles-eu.stadiamaps.com/tiles/stamen_toner/{z}/{x}/{y}{r}.png', {
+            minZoom: 0,
+            maxZoom: 18,    
+            attribution: '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://stamen.com/" target="_blank">Stamen Design</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/about" target="_blank">OpenStreetMap</a> contributors', 
         }).addTo(this.map);
     }
 
-    postData() {
+    /*postData() {
         const postDataAsJson = async () => {
             const data = new FormData();
             data.append("gameId", this.gameId);        
@@ -58,7 +57,7 @@ class Map
             return await response.json();
         }
         return postDataAsJson();
-    }
+    }*/
 
     /*getUserData() {
         const getUserDataJson = async () => {
