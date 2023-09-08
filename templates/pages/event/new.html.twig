@@ -1,6 +1,8 @@
 {% extends "base.html.twig" %}
 {% set showEventNav = true %}
 
+{% block title %}Games & Friends - Créer un évènement{% endblock %}
+
 {% block body %}
     <div class="container mt-4">
         <h1 class="mt-4">
@@ -25,7 +27,7 @@
             </div>
         </div>
 
-            <div class="form-group">
+        <div class="form-group">
             {{ form_label(form.eventStartAt) }}
             {{ form_widget(form.eventStartAt) }}
             <div class="form-error">
@@ -33,7 +35,7 @@
             </div>
         </div>
 
-            <div class="form-group">
+        <div class="form-group">
             {{ form_label(form.eventEndAt) }}
             {{ form_widget(form.eventEndAt) }}
             <div class="form-error">
@@ -41,7 +43,12 @@
             </div>
         </div>
 
-            <div class="form-group">
+        <div class="autocomplete-container form-group" id="autocomplete-container">
+            <label class="mt-4" for="signin_adress">Adresse</label>
+            <small id="adressHelp" class="form-text text-muted">Votre adresse ne sera utilisée qu'à des fins de localisation et ne sera jamais communiqué à quiconque.</small>
+        </div>
+
+        <div class="form-group">
             {{ form_label(form.eventMaxPlayer) }}
             {{ form_widget(form.eventMaxPlayer) }}
             <div class="form-error">
@@ -49,7 +56,7 @@
             </div>
         </div>
 
-            <div class="form-group">
+        <div class="form-group">
             {{ form_label(form.eventGame) }}
             {{ form_widget(form.eventGame) }}
             <div class="form-error">
@@ -63,4 +70,5 @@
 
         {{ form_end(form) }}
     </div>
+    <script src="{{ asset('js/locationScript.js') }}"></script>
 {% endblock %}

@@ -35,10 +35,15 @@
             </div>
         </div>
 
+        <div class="autocomplete-container form-group" id="autocomplete-container">
+            <label class="mt-4" for="signin_adress">Adresse</label>
+            <small id="adressHelp" class="form-text text-muted">Votre adresse ne sera utilisée qu'à des fins de localisation et ne sera jamais communiqué à quiconque.</small>
+        </div>
+
         <div class="form-group">
             {{ form_label(form.email) }}
-            {{ form_widget(form.email) }}
             <small id="emailHelp" class="form-text text-muted">Votre adresse mail ne sera utilisée qu'à des fins d'authentifications et ne sera jamais communiqué à quiconque.</small>
+            {{ form_widget(form.email) }}
             <div class="form-error">
                 {{ form_errors(form.email) }}
             </div>
@@ -65,4 +70,5 @@
 
         {{ form_end(form) }}
     </div>
+    <script src="{{ asset('js/locationScript.js') }}"></script>
 {% endblock %}
