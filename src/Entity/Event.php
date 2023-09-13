@@ -30,7 +30,7 @@ class Event
     private ?string $eventName = null;
 
     #[ORM\ManyToOne(inversedBy: 'events')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Game $eventGame = null;
 
     #[ORM\Column(type: Types::TEXT)]

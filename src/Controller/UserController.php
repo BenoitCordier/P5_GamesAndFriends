@@ -196,8 +196,8 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/user/removeGame/{id}', name: 'user.remove.game', methods:['GET', 'POST'])]
-    public function removeGame(User $user, EntityManagerInterface $manager, GameRepository $gameRepository, int $id): Response
+    #[Route('/user/removeGame/{id}/{gameId}', name: 'user.remove.game', methods:['GET', 'POST'])]
+    public function removeGame(User $user, int $gameId, EntityManagerInterface $manager, GameRepository $gameRepository): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('security.login');
@@ -211,10 +211,8 @@ class UserController extends AbstractController
             ]);
         }
 
-        $game = $gameRepository->find($id);
-
+        $game = $gameRepository->find($gameId);
         $user->removeGame($game);
-
         $manager->flush();
 
         $this->addFlash(

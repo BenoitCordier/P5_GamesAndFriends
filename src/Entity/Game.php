@@ -29,6 +29,7 @@ class Game
     private ?string $gameName = null;
 
     #[ORM\OneToMany(mappedBy: 'eventGame', targetEntity: Event::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private Collection $events;
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'games')]
