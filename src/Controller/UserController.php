@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Game;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Form\UserGameType;
@@ -79,7 +78,7 @@ class UserController extends AbstractController
             );
 
             return $this->redirectToRoute('user.index', [
-                'id' => $this->$user->getId()
+                'id' => $this->getUser()->getId()
             ]);
         }
 

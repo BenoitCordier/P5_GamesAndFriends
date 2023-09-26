@@ -44,7 +44,8 @@ class AppFixtures extends Fixture
             ->setLastName($this->faker->lastName())
             ->setRoles(['ROLE_USER'])
             ->setEmail($this->faker->email())
-            ->setPlainPassword('password');
+            ->setPlainPassword('password')
+            ->setUserLocation($this->faker->address());
 
             for ($k = 1; $k < mt_rand(1, 5); $k++) {
                 $user->addGame($games[mt_rand(0, count($games) - 1)]);

@@ -82,9 +82,6 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $user = $form->getData();
-            $location = $request->request->get('signin_adress');
-
-            $user->setLocation($location);
             $user->setRoles(['ROLE_USER']);
 
             $manager->persist($user);

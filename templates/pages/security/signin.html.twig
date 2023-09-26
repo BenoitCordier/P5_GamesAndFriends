@@ -36,8 +36,14 @@
         </div>
 
         <div class="autocomplete-container form-group" id="autocomplete-container">
-            <label class="mt-4" for="signin_adress">Adresse</label>
+            {{form_label(form.userLocation)}}
             <small id="adressHelp" class="form-text text-muted">Veuillez commencer à taper votre adresse puis selectionnez la dans la liste.</small>
+            <div id="input_container" class="input-container">
+                {{form_widget(form.userLocation)}}
+                <div class="form-error">
+                {{ form_errors(form.userLocation) }}
+                </div>
+            </div>
         </div>
 
         <div class="form-group">

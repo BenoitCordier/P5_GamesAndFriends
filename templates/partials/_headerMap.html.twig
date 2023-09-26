@@ -4,27 +4,23 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarColor04">
-            <form class="d-flex form-inline">
-            <div class="input-group">
-                <label class="m-2" for="searchType">Je recherche des</label>
+            <form id="searchMapForm" class="d-flex form-inline">
+                <div class="input-group">
+                    <label class="m-2" for="searchType">Je recherche des</label>
                     <select class="form-select m-2" id="searchType">
-                        <option value="1" selected>joueurs</option>
-                        <option value="2">évènements</option>
+                        <option value="player">joueurs</option>
+                        <option value="event">évènements</option>
                     </select>
-            </div>
-            <div class="input-group">
-                <label class="m-2" for="searchGame">pour le jeu</label>
+                </div>
+                <div class="input-group">
+                    <label class="m-2" for="searchGame">pour le jeu</label>
                     <select class="form-select m-2" id="searchGame">
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        {% for game in app.user.games|sort((a, b) => a.gameName <=> b.gameName) %}
+                        <option value="{{game.id}}">{{game.gameName}}</option>
+                        {% endfor %}
                     </select>
-            </div>
-            <div class="form-group m-2">
-                <label for="searchWhere" class="form-label m-2">autour de</label>
-                <input id="serachWhere" class="form-control me-sm-2 form-control-sm" type="search" placeholder="Code postal">
-            </div>
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Rechercher</button>
+                </div>
+                <button id="submitButton" class="btn btn-outline-primary my-2 my-sm-0" type="submit">Rechercher</button>
             </form>
         </div>
     </div>

@@ -24,6 +24,9 @@
             <script type="text/javascript" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
             <!-- Geoapify -->
             <script src="https://unpkg.com/@geoapify/leaflet-address-search-plugin@^1/dist/L.Control.GeoapifyAddressSearch.min.js"></script>
+            <!-- FOSJs -->
+            <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
         {% endblock %}
     </head>
     <body>

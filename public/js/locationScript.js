@@ -4,17 +4,13 @@ function addressAutocomplete(containerElement, callback, options) {
     const DEBOUNCE_DELAY = 300;
 
     // Create container for input element
-    const inputContainerElement = document.createElement("div");
-    inputContainerElement.setAttribute("class", "input-container");
-    containerElement.appendChild(inputContainerElement);
+    const inputContainerElement = document.getElementById("input_container");
 
     // Create input element
-    const inputElement = document.createElement("input");
+    const inputElement = document.getElementById("signin_userLocation");
     inputElement.setAttribute("type", "text");
     inputElement.setAttribute("class", "form-control");
-    inputElement.setAttribute("id", "signin_adress");
     inputElement.setAttribute("placeholder", options.placeholder);
-    inputContainerElement.appendChild(inputElement);
 
     // Add input field clear button
     const clearButton = document.createElement("div");
@@ -218,5 +214,5 @@ addressAutocomplete(document.getElementById("autocomplete-container"), (data) =>
     console.log("Selected option: ");
     console.log(data);
 }, {
-    placeholder: ""
+    placeholder: "Votre adresse"
 });
