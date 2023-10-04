@@ -22,7 +22,7 @@ class EventType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('eventName', TextType::class, [
+            ->add('name', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                     'minlength' => '3',
@@ -73,6 +73,22 @@ class EventType extends AbstractType
                     'class' => 'form-label mt-4'
                 ],
                 'constraints' => [
+                    new Assert\NotBlank()
+                ]
+            ])
+            ->add('location', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'minlength' => '2',
+                    'maxlenght' => '255',
+                    'id' => 'signin_adress',
+                ],
+                'label' => "Adresse",
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ],
+                'constraints' => [
+                    new Assert\Length(['min' => 2, 'max' => 255]),
                     new Assert\NotBlank()
                 ]
             ])

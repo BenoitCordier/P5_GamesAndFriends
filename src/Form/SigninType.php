@@ -51,7 +51,7 @@ class SigninType extends AbstractType
                         'class' => 'form-label mt-4'
                 ]],
             ])
-            ->add('userName', TextType::class, [
+            ->add('name', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                     'minlength' => '3',
@@ -96,7 +96,7 @@ class SigninType extends AbstractType
                     new Assert\NotBlank()
                 ]
             ])
-            ->add('userLocation', TextType::class, [
+            ->add('location', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                     'minlength' => '2',
@@ -119,10 +119,10 @@ class SigninType extends AbstractType
                         ->orderBy('i.gameName', 'ASC');
                 },
                 'choice_label' => 'gameName',
-                'multiple' => true,
-                'expanded' => true,
+                'multiple' => false,
+                'expanded' => false,
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-select'
                 ],
                 'label' => "Jeux",
                 'label_attr' => [

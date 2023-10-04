@@ -30,20 +30,18 @@
                     <th scope="col">Date de début</th>
                     <th scope="col">Date de fin</th>
                     <th scope="col">Nombre de joueur maximum</th>
-                    <th scope="col">Description</th>
                     <th scope="col">Localisation</th>
                 </tr>
             </thead>
             <tbody>
             {% for event in events %}
                 <tr class="table-light">
-                    <th scope="row">{{event.eventName}}</th>
+                    <th scope="row">{{event.name}}</th>
                     <th scope="row">{{event.eventGame}}</th>
                     <th scope="row">{{event.eventStartAt|date('d/m/y H:i')}}</th>
                     <th scope="row">{{event.eventEndAt|date('d/m/y H:i')}}</th>
                     <th scope="row">{{event.eventMaxPlayer}}</th>
-                    <th scope="row">{{event.eventDescription}}</th>
-                    <th scope="row">WIP - Postcode</th>
+                    <th scope="row">{{event.location}}</th>
                     {% if event.eventAdmin == app.user or app.user.roles[0] is same as("ROLE_ADMIN") %}
                     <td><a href="{{ path('event.edit', { id: event.id })}}" class="btn btn-outline-primary">Modifier</a></td>
                     <td><a href="{{ path('event.delete', { id: event.id })}}"class="btn btn-outline-primary">Supprimer</a></td>

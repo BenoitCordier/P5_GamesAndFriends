@@ -36,7 +36,7 @@ class UserGameType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-outline-primary mt-4'
                 ],
-                'label' => 'Valider'
+                'label' => 'Ajouter'
             ])
         ;
     }

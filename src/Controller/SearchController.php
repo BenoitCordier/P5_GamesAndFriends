@@ -13,13 +13,12 @@ class SearchController extends AbstractController
     public function searchPlayer(Game $game): JsonResponse
     {
         $users = $game->getUsers();
-
         $arrayCollection = array();
 
         foreach($users as $user) {
             $arrayCollection[] = array(
-                'userName' => $user->getUserName(),
-                'userLocation' => $user->getUserLocation()
+                'name' => $user->getName(),
+                'location' => $user->getLocation()
             );
         }
 
@@ -31,15 +30,17 @@ class SearchController extends AbstractController
     public function searchEvent(Game $game): JsonResponse
     {
         $events = $game->getEvents();
-        $response = new JsonResponse();
+        $arrayCollection = array();
 
         foreach ($events as $event) {
-            $response->setData([
-                'eventName' => $event->getEventName(),
-                'eventLocation' => $event->getEventLocation()
-            ]);
-            $response->send();
+            $arrayCollection[] = array(
+                'name' => $event->getName(),
+                'location' => $event->getLocation()
+            );
         }
+
+        $response = new JsonResponse($arrayCollection);
+        return $response;
     }
 
 }

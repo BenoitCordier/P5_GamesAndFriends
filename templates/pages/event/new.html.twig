@@ -12,10 +12,10 @@
         {{ form_start(form) }}
 
         <div class="form-group">
-            {{ form_label(form.eventName) }}
-            {{ form_widget(form.eventName) }}
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
             <div class="form-error">
-                {{ form_errors(form.eventName) }}
+                {{ form_errors(form.name) }}
             </div>
         </div>
 
@@ -44,8 +44,14 @@
         </div>
 
         <div class="autocomplete-container form-group" id="autocomplete-container">
-            <label class="mt-4" for="signin_adress">Adresse</label>
-            <small id="adressHelp" class="form-text text-muted">Votre adresse ne sera utilisée qu'à des fins de localisation et ne sera jamais communiqué à quiconque.</small>
+            {{form_label(form.location)}}
+            <small id="adressHelp" class="form-text text-muted">Veuillez commencer à taper votre adresse puis selectionnez la dans la liste.</small>
+            <div id="input_container" class="input-container">
+                {{form_widget(form.location)}}
+                <div class="form-error">
+                {{ form_errors(form.location) }}
+                </div>
+            </div>
         </div>
 
         <div class="form-group">

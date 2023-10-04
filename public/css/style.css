@@ -1,9 +1,69 @@
+/* MAP */
 html, body, #map {
     width: 100%;
     height: 600px;
     margin: 0;
 }
 
+.marker-cluster-small div {
+    height: 40px;
+    width: 40px;
+    background-color: white;
+    border: 2px solid rgba(162,0,109, 1);
+    border-radius: 50%;
+    color: black;
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+    box-shadow: 0 0 0 2px rgba(162,0,109, 1);
+    padding-top: 6px;
+}
+
+.marker-cluster-medium div {
+    background-color: rgba(240, 194, 12, 0.6);
+}
+
+.marker-cluster-large div {
+    background-color: rgba(241, 128, 23, 0.6);
+}
+
+.marker-pin {
+    width: 40px;
+    height: 40px;
+    border-radius: 50% 50% 50% 0;
+    background: black;
+    background-color: rgb(162,0,109);
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 50%;
+    top: 50%;
+    margin: -15px 0 0 -15px;
+}
+
+/* to draw white circle*/
+.marker-pin::after {
+    content: '';
+    width: 34px;
+    height: 34px;
+    margin: 3px 0 0 3px;
+    background: #fff;
+    position: absolute;
+    border-radius: 50%;
+}
+
+/* to align icon */
+.custom-div-icon i {
+    position: absolute;
+    width: 22px;
+    font-size: 24px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin: 14px 10px;
+    color: black;
+}
+
+/* AUTOCOMPLETE ADRESS FIELD */
 .autocomplete-container {
     margin-bottom: 20px;
 }
@@ -64,3 +124,5 @@ html, body, #map {
 .clear-button:hover {
     color: rgba(0, 0, 0, 0.6);
 }
+
+/* GAMELIST */

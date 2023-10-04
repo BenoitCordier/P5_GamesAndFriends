@@ -12,10 +12,10 @@
         {{ form_start(form) }}
 
         <div class="form-group">
-            {{ form_label(form.eventName) }}
-            {{ form_widget(form.eventName) }}
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
             <div class="form-error">
-                {{ form_errors(form.eventName) }}
+                {{ form_errors(form.name) }}
             </div>
         </div>
 
@@ -27,7 +27,7 @@
             </div>
         </div>
 
-            <div class="form-group">
+        <div class="form-group">
             {{ form_label(form.eventStartAt) }}
             {{ form_widget(form.eventStartAt) }}
             <div class="form-error">
@@ -35,7 +35,7 @@
             </div>
         </div>
 
-            <div class="form-group">
+        <div class="form-group">
             {{ form_label(form.eventEndAt) }}
             {{ form_widget(form.eventEndAt) }}
             <div class="form-error">
@@ -43,7 +43,18 @@
             </div>
         </div>
 
-            <div class="form-group">
+        <div class="autocomplete-container form-group" id="autocomplete-container">
+            {{form_label(form.location)}}
+            <small id="adressHelp" class="form-text text-muted">Veuillez commencer à taper votre adresse puis selectionnez la dans la liste.</small>
+            <div id="input_container" class="input-container">
+                {{form_widget(form.location)}}
+                <div class="form-error">
+                {{ form_errors(form.location) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
             {{ form_label(form.eventMaxPlayer) }}
             {{ form_widget(form.eventMaxPlayer) }}
             <div class="form-error">
@@ -51,7 +62,7 @@
             </div>
         </div>
 
-            <div class="form-group">
+        <div class="form-group">
             {{ form_label(form.eventGame) }}
             {{ form_widget(form.eventGame) }}
             <div class="form-error">

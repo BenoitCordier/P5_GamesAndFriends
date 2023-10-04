@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email')]
-#[UniqueEntity('userName')]
+#[UniqueEntity('name')]
 #[ORM\EntityListeners(['App\EntityListener\UserListener'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -52,7 +52,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         minMessage: "Votre nom d'utilisateur doit contenir plus de {{ limit }} caractères.",
         maxMessage: "Votre nom d'utilisateur doit contenir moins de {{ limit }} caractères."
     )]
-    private ?string $userName = null;
+    private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
@@ -83,13 +83,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank]
-    private ?string $userLocation = null;
+    private ?string $location = null;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
-        $this->games = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -97,14 +96,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getUserName(): ?string
+    public function getName(): ?string
     {
-        return $this->userName;
+        return $this->name;
     }
 
-    public function setUserName(string $userName): static
+    public function setName(string $name): static
     {
-        $this->userName = $userName;
+        $this->name = $name;
 
         return $this;
     }
@@ -248,7 +247,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString()
     {
-        return $this->userName;
+        return $this->name;
     }
 
     public function getUpdatedAt(): ?\DateTimeImmutable
@@ -263,14 +262,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getUserLocation(): ?string
+    public function getLocation(): ?string
     {
-        return $this->userLocation;
+        return $this->location;
     }
 
-    public function setUserLocation(string $userLocation): static
+    public function setLocation(string $location): static
     {
-        $this->userLocation = $userLocation;
+        $this->location = $location;
 
         return $this;
     }

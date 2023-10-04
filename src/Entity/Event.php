@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
-#[UniqueEntity('eventName')]
+#[UniqueEntity('name')]
 class Event
 {
     #[ORM\Id]
@@ -27,7 +27,7 @@ class Event
         minMessage: "Le nom de l'évènement doit contenir plus de {{ limit }} lettres.",
         maxMessage: "Le nom de l'évènement doit contenir moins de {{ limit }} lettres."
     )]
-    private ?string $eventName = null;
+    private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'events')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
@@ -58,6 +58,10 @@ class Event
     #[Assert\GreaterThanOrEqual(2)]
     private ?int $eventMaxPlayer = null;
 
+    #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
+    private ?string $location = null;
+
     public function __construct()
     {
         $this->eventPlayer = new ArrayCollection();
@@ -70,14 +74,14 @@ class Event
         return $this->id;
     }
 
-    public function getEventName(): ?string
+    public function getName(): ?string
     {
-        return $this->eventName;
+        return $this->name;
     }
 
-    public function setEventName(string $eventName): static
+    public function setName(string $name): static
     {
-        $this->eventName = $eventName;
+        $this->name = $name;
 
         return $this;
     }
@@ -174,6 +178,18 @@ class Event
     public function setEventMaxPlayer(int $eventMaxPlayer): static
     {
         $this->eventMaxPlayer = $eventMaxPlayer;
+
+        return $this;
+    }
+
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(string $location): static
+    {
+        $this->location = $location;
 
         return $this;
     }

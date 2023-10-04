@@ -3,35 +3,30 @@ class Map
     constructor()
     {
         this.map = L.map('map').setView([47.081012, 2.398782], 6);
+        this.markerClusterGroup = new L.MarkerClusterGroup({
+            maxClusterRadius: 30,
+            spiderfyOnMaxZoom: true,
+            showCoverageOnHover: false,
+            zoomToBoundsOnClick: true,
+            removeOutsideVisibleBounds: true
+        });
         this.myAPIKey = "6c5dd3e7389140018457150f3a20be4b";
         this.isRetina = L.Browser.retina;
         this.baseUrl = "https://maps.geoapify.com/v1/tile/toner/{z}/{x}/{y}.png?apiKey=6c5dd3e7389140018457150f3a20be4b";
         this.retinaUrl = "https://maps.geoapify.com/v1/tile/toner/{z}/{x}/{y}@2x.png?apiKey=6c5dd3e7389140018457150f3a20be4b";
-        
-        this.LeafIcon = L.Icon.extend({
-            options: {
-                iconSize: [35, 45],
-                shadowSize: [41, 41],
-                iconAnchor: [13, 41],
-                shadowAnchor: [0, 41],
-                popupAnchor: [0, -40]
-            }
-        });
-        this.iconIdle = new this.LeafIcon({
-            iconUrl: 'img/iconIdle.png'
-        });
-        this.iconActive = new this.LeafIcon({
-            iconUrl: 'img/iconActive.png'
-        });
-        
-        this.searchMapForm = document.getElementById('searchMapForm');
-        this.searchMapForm.addEventListener('submit', this.search, false);
-
+        this.icon = L.divIcon({
+                className: 'custom-div-icon',
+                html: "<div class='marker-pin'></div><i class='fa-solid fa-dice-six awesome'>",
+                iconSize: [30, 42],
+                iconAnchor: [15, 42],
+                popupAnchor: [5, -35]
+            });
         this.createMap();
+        this.searchMapForm = document.getElementById('searchMapForm');
+        this.searchMapForm.addEventListener('submit', (event) => {event.preventDefault(); return this.search()}, false);
     }
 
-// Map creation
-
+    // Map creation
     createMap()
     {
         L.tileLayer(this.isRetina ? this.retinaUrl : this.baseUrl, {
@@ -43,13 +38,13 @@ class Map
         }).addTo(this.map);
     }
 
-    search(event)
+    // Search fonction
+    search()
     {
-        event.preventDefault();
-
+        this.markerArray = [];
+        // Setting the storage array for the markers
         this.searchGameId = document.getElementById('searchGame').value;
         this.searchStyle = document.getElementById('searchType').value;
-        
         // Get data from db
         const postDataAsJson = async () => {
             const data = new FormData();
@@ -58,30 +53,30 @@ class Map
                 method: "POST",    
                 body: data,
             };
-
+            // Call the right route of research
             if (this.searchStyle === 'player') {
                 var response = await fetch(Routing.generate('search.player', { id : this.searchGameId }, true), fetchOptions ); // If player is searched
             }
             if (this.searchStyle === 'event') {
                 var response = await fetch(Routing.generate('search.event', { id : this.searchGameId }, true), fetchOptions); // If event is searched
             }
+            
             if (!response.ok) {
                 const errorMessage = await response.text();
                 throw new Error(errorMessage);
             }
             return await response.json();
         }
+        // Batch geocoding
         postDataAsJson().then(data => {
-        // Isolate location
-            let userLocation = [];
+            // Isolate location
+            let location = [];
             for (let i = 0; i < data.length; i++) {
-                userLocation.push(data[i].userLocation);
+                location.push(data[i].location);
             }
-
-        // Start batch geocoder job
-            const batchData = userLocation;
+            // Start batch geocoder
+            const batchData = location;
             const url = `https://api.geoapify.com/v1/batch/geocode/search?apiKey=6c5dd3e7389140018457150f3a20be4b`;
-    
             fetch(url, {
                 method: 'post',
                 headers: {
@@ -95,32 +90,41 @@ class Map
                 if (result.status !== 202) {
                     return Promise.reject(result)
                 } else {
-                    const queryResult = await getAsyncResult(`${url}&id=${result.body.id}`, 1 * 1000 /* 60 seconds */, 100);
-                    console.log(queryResult);
-                    for (let j = 0; j < queryResult.length; j++) {
-                        var lat = queryResult.map(function(object) {
-                            return object.lat;
-                        });
+                    // Get longitude/latitude
+                    const queryResult = await getAsyncResult(`${url}&id=${result.body.id}`, 1 * 1000 /* 1 second */, 100);
+                    let coordinates = queryResult.map( ({lat, lon}) => ({lat, lon}) );
+                    coordinates.forEach(function(e){
+                        if (typeof e === "object" ){
+                            e["name"] = "";
+                        }
+                    });
+                    // Rebind name and longitude/latitude
+                    for (let j = 0; j < data.length; j++) {
+                        coordinates[j].name = data[j].name;
                     }
-                    for (let k = 0; k < queryResult.length; k++) {
-                        var lon = queryResult.map(function(object) {
-                            return object.lon;
-                        });
+                    // Generate marker
+                    // Remove previous markers
+                    this.markerClusterGroup.clearLayers();
+                    // Add each markers to the cluster
+                    for (let i = 0; i < coordinates.length; i++) {
+                        this.markerClusterGroup.addLayer(L.marker([coordinates[i].lat, coordinates[i].lon], {
+                            icon: this.icon
+                        })
+                        .bindPopup('Name : ' + coordinates[i].name + '</br> GameId : ' + this.searchGameId)
+                        .openPopup());
                     }
-                    console.log(lat);
-                    console.log(lon);
-                    return queryResult;
+                    this.map.addLayer(this.markerClusterGroup);
                 }
             })
             .catch(err => console.log(err));
         });
-    
-    // Get job results - addresses, their geographical coordinates, address components
+
+        // Get job results - addresses, their geographical coordinates, address components
         function getBodyAndStatus(response) {
             return response.json().then(responceBody => {
                 return {
-                status: response.status,
-                body: responceBody
+                    status: response.status,
+                    body: responceBody
                 }
             });
         }
@@ -156,5 +160,4 @@ class Map
         }
     }
 }
-
 window.onload = new Map(); // Init map
