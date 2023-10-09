@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+{% set showEventNav = true %}
+
+{% block title %}Games & Friends - Evènements auxquels je participe{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+    {% if not events is same as([]) %}
+        <h1 class="mt-4">Evènements auxquels je participe</h1>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success mt-4">
+            {{ message }}
+        </div>
+    {% endfor %}
+        {% for message in app.flashes('warning') %}
+        <div class="alert alert-warning mt-4">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+        <div class="navigation">
+            {{ knp_pagination_render(events) }}
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Jeu</th>
+                    <th scope="col">Date de début</th>
+                    <th scope="col">Date de fin</th>
+                    <th scope="col">Nombre de joueur maximum</th>
+                    <th scope="col">Localisation</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for event in events %}
+                <tr class="table-light">
+                    <th scope="row"><a href="{{ path('event.viewEvent', { id: event.id })}}">{{event.name}}</a></th>
+                    <th scope="row">{{event.eventGame}}</th>
+                    <th scope="row">{{event.eventStartAt|date('d/m/y H:i')}}</th>
+                    <th scope="row">{{event.eventEndAt|date('d/m/y H:i')}}</th>
+                    <th scope="row">{{event.eventMaxPlayer}}</th>
+                    <th scope="row">{{event.location}}</th>
+                    <td><a href="{{ path('event.quit', { id: app.user.id, eventId: event.id })}}" class="btn btn-outline-primary">Se désinscrire</a></td>
+                </tr>
+            </tbody>
+
+        {% endfor %}
+        </table>
+        <div class="navigation">
+            {{ knp_pagination_render(events) }}
+        </div>
+    {% else %}
+        <div class="mt-4">Aucun évènement n'est disponible.</div>
+    {% endif %}
+    </div>
+{% endblock %}

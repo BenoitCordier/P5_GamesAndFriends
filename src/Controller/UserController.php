@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Form\UserGameType;
+use App\Form\UserLocationType;
 use App\Form\UserPasswordType;
 use App\Repository\GameRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,7 +55,6 @@ class UserController extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('security.login');
         }
-
         if ($this->getUser() !== $user) {
             $unauthorisedUserId = $this->getUser()->getId();
 
@@ -64,11 +64,11 @@ class UserController extends AbstractController
         }
 
         $form = $this->createForm(UserType::class, $user);
-
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
-
+            $user->setUpdatedAt(new \DateTimeImmutable());
             $manager->persist($user);
             $manager->flush();
 
@@ -101,7 +101,6 @@ class UserController extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('security.login');
         }
-
         if ($this->getUser() !== $user) {
             $unauthorisedUserId = $this->getUser()->getId();
 
@@ -111,7 +110,6 @@ class UserController extends AbstractController
         }
 
         $form = $this->createForm(UserPasswordType::class);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -157,7 +155,6 @@ class UserController extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('security.login');
         }
-
         if ($this->getUser() !== $user) {
             $unauthorisedUserId = $this->getUser()->getId();
 
@@ -167,16 +164,16 @@ class UserController extends AbstractController
         }
 
         $form = $this->createForm(UserGameType::class);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $games = $form->getData();
             foreach ($games as $game) {
-                foreach($game->getIterator() as $u => $uniqueGame) {
+                foreach ($game->getIterator() as $u => $uniqueGame) {
                     $user->addGame($uniqueGame);
                 }
             }
+            $user->setUpdatedAt(new \DateTimeImmutable());
             $manager->persist($user);
             $manager->flush();
 
@@ -195,7 +192,16 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/user/removeGame/{id}/{gameId}', name: 'user.remove.game', methods:['GET', 'POST'])]
+    /**
+     * Allow user to remove game from their profile
+     *
+     * @param User $user
+     * @param integer $gameId
+     * @param EntityManagerInterface $manager
+     * @param GameRepository $gameRepository
+     * @return Response
+     */
+    #[Route('/user/removeGame/{id}/{gameId}', name: 'user.remove.game', methods: ['GET', 'POST'])]
     public function removeGame(User $user, int $gameId, EntityManagerInterface $manager, GameRepository $gameRepository): Response
     {
         if (!$this->getUser()) {
@@ -211,6 +217,7 @@ class UserController extends AbstractController
         }
 
         $game = $gameRepository->find($gameId);
+        $user->setUpdatedAt(new \DateTimeImmutable());
         $user->removeGame($game);
         $manager->flush();
 
@@ -221,6 +228,67 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('user.index', [
             'id' => $this->getUser()->getId()
+        ]);
+    }
+
+    /**
+     * Allow a user to edit his location
+     *
+     * @param User $user
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    #[Route('/user/editLocation/{id}', name: 'user.edit.location', methods: ['GET', 'POST'])]
+    public function editLocation(User $user, Request $request, EntityManagerInterface $manager): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('security.login');
+        }
+        if ($this->getUser() !== $user) {
+            $unauthorisedUserId = $this->getUser()->getId();
+
+            return $this->redirectToRoute('user.index', [
+                'id' => $unauthorisedUserId
+            ]);
+        }
+
+        $form = $this->createForm(UserLocationType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $location = $form->getData()['location'];
+            $user->setLocation($location);
+            $user->setUpdatedAt(new \DateTimeImmutable());
+            $manager->persist($user);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Adresse modifiée avec succès !'
+            );
+
+            return $this->redirectToRoute('user.index', [
+                'id' => $this->getUser()->getId()
+            ]);
+        }
+
+        return $this->render('/pages/user/editLocation.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Access the public profile of a given user
+     *
+     * @param User $user
+     * @return Response
+     */
+    #[Route('/user/viewProfile/{id}', name: 'user.viewProfile', methods: ['GET'])]
+    public function viewProfile(User $user): Response
+    {
+        return $this->render('pages/user/viewProfile.html.twig', [
+            'user' => $user
         ]);
     }
 }

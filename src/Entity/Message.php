@@ -15,9 +15,6 @@ class Message
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $messageTitle = null;
-
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $messageFrom = null;
@@ -27,27 +24,24 @@ class Message
     private ?User $messageTo = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $messageSendAt = null;
+    private ?\DateTimeImmutable $messageDate = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank]
     private ?string $messageText = null;
 
+    #[ORM\ManyToOne(inversedBy: 'message')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?MessageThread $messageThread = null;
+
+    public function __construct()
+    {
+        $this->messageDate = new \DateTimeImmutable();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getMessageTitle(): ?string
-    {
-        return $this->messageTitle;
-    }
-
-    public function setMessageTitle(?string $messageTitle): static
-    {
-        $this->messageTitle = $messageTitle;
-
-        return $this;
     }
 
     public function getMessageFrom(): ?User
@@ -74,14 +68,14 @@ class Message
         return $this;
     }
 
-    public function getMessageSendAt(): ?\DateTimeImmutable
+    public function getMessageDate(): ?\DateTimeImmutable
     {
-        return $this->messageSendAt;
+        return $this->messageDate;
     }
 
-    public function setMessageSendAt(\DateTimeImmutable $messageSendAt): static
+    public function setMessageDate(\DateTimeImmutable $messageDate): static
     {
-        $this->messageSendAt = $messageSendAt;
+        $this->messageDate = $messageDate;
 
         return $this;
     }
@@ -94,6 +88,18 @@ class Message
     public function setMessageText(string $messageText): static
     {
         $this->messageText = $messageText;
+
+        return $this;
+    }
+
+    public function getMessageThread(): ?MessageThread
+    {
+        return $this->messageThread;
+    }
+
+    public function setMessageThread(?MessageThread $messageThread): static
+    {
+        $this->messageThread = $messageThread;
 
         return $this;
     }

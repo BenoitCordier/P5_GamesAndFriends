@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Games & Friends - Toutes les conversations{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+    {% if not events is same as([]) %}
+        <h1 class="mt-4">Mes conversations</h1>
+
+        <div class="navigation">
+            {{ knp_pagination_render(events) }}
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Conversation avec</th>
+                    <th scope="col">Dernier message le </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for event in events %}
+                <tr class="table-light">
+                    <th scope="row">{{event.name}}</th>
+                    <th scope="row">{{event.eventStartAt|date('d/m/y H:i')}}</th>
+                </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+        <div class="navigation">
+            {{ knp_pagination_render(events) }}
+        </div>
+    {% else %}
+        <div class="mt-4">Aucune conversation n'existe.</div>
+    {% endif %}
+    </div>
+{% endblock %}

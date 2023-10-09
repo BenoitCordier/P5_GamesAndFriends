@@ -119,8 +119,8 @@ class SigninType extends AbstractType
                         ->orderBy('i.gameName', 'ASC');
                 },
                 'choice_label' => 'gameName',
-                'multiple' => false,
-                'expanded' => false,
+                'multiple' => true,
+                'expanded' => true,
                 'attr' => [
                     'class' => 'form-select'
                 ],

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Event;
 use App\Form\EventType;
 use App\Repository\EventRepository;
@@ -37,6 +38,75 @@ class EventController extends AbstractController
     }
 
     /**
+     * Display a single event
+     *
+     * @param Event $event
+     * @return Response
+     */
+    #[Route('/event/viewEvent/{id}', name: 'event.viewEvent', methods: ['GET'])]
+    public function viewEvent(Event $event): Response
+    {
+        return $this->render('pages/event/viewEvent.html.twig', [
+            'event' => $event
+        ]);
+    }
+
+    /**
+     * Display the event for which the user is admin
+     *
+     * @param EventRepository $repository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
+     */
+    #[Route('/event/myEvent', name: 'event.myevent', methods: ['GET', 'POST'])]
+    public function myEvent(EventRepository $repository, PaginatorInterface $paginator, Request $request): Response
+    {
+        $user = $this->getUser()->getId();
+        $events = $paginator->paginate(
+            $repository->findBy(['eventAdmin' => $user]),
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render('pages/event/myEvent.html.twig', [
+            'events' => $events
+        ]);
+    }
+
+    /**
+     * Display the event for which the user is registered
+     *
+     * @param EventRepository $repository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
+     */
+    #[Route('/event/events', name: 'event.events', methods: ['GET', 'POST'])]
+    public function events(EventRepository $repository, PaginatorInterface $paginator, Request $request): Response
+    {
+        $arrayCollection = array();
+        $eventPlayer = $this->getUser();
+        $eventsCollection = $repository->findAll();
+        foreach ($eventsCollection as $event) {
+            $eventPlayers = $event->getEventPlayers();
+            if ($eventPlayers->contains($eventPlayer)) {
+                $arrayCollection[] = $event;
+            }
+        }
+
+        $events = $paginator->paginate(
+            $arrayCollection,
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render('pages/event/events.html.twig', [
+            'events' => $events
+        ]);
+    }
+
+    /**
      * Add a new event
      *
      * @param Request $request
@@ -62,7 +132,7 @@ class EventController extends AbstractController
                 'Evènement ajouté avec succès !'
             );
 
-            return $this->redirectToRoute('event.index');
+            return $this->redirectToRoute('event.myevent');
         }
 
         return $this->render('pages/event/new.html.twig', [
@@ -94,7 +164,7 @@ class EventController extends AbstractController
                 'Evènement modifié avec succès !'
             );
 
-            return $this->redirectToRoute('event.index');
+            return $this->redirectToRoute('event.myevent');
         }
 
         return $this->render('pages/event/edit.html.twig', [
@@ -119,6 +189,65 @@ class EventController extends AbstractController
             'Evènement supprimé avec succès !'
         );
 
-        return $this->redirectToRoute('event.index');
+        return $this->redirectToRoute('event.myevent');
+    }
+
+    /**
+     * Allow a user to join an event
+     *
+     * @param User $user
+     * @param integer $eventId
+     * @param EntityManagerInterface $manager
+     * @param EventRepository $eventRepository
+     * @return Response
+     */
+    #[Route('/event/join/{id}/{eventId}', name: 'event.join', methods: ['GET'])]
+    public function joinEvent(User $user, int $eventId, EntityManagerInterface $manager, EventRepository $eventRepository): Response
+    {
+        $event = $eventRepository->find($eventId);
+        $eventMaxPlayer = $event->getEventMaxPlayer();
+        $playerCount = $event->getEventPlayers();
+        $playerCount = $playerCount->count();
+        $reservationAvalaible = $eventMaxPlayer - $playerCount;
+
+        if ($reservationAvalaible > 0) {
+            $event->addEventPlayer($user);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Vous vous êtes bien inscrit !'
+            );
+        } else {
+            $this->addFlash(
+                'warning',
+                'Il n\'y a plus de place disponible !'
+            );
+        }
+        return $this->redirectToRoute('event.events');
+    }
+
+    /**
+     * Allow a user to leave an event
+     *
+     * @param User $user
+     * @param integer $eventId
+     * @param EntityManagerInterface $manager
+     * @param EventRepository $eventRepository
+     * @return Response
+     */
+    #[Route('/event/quit/{id}/{eventId}', name: 'event.quit', methods: ['GET'])]
+    public function quitEvent(User $user, int $eventId, EntityManagerInterface $manager, EventRepository $eventRepository): Response
+    {
+        $event = $eventRepository->find($eventId);
+        $event->removeEventPlayer($user);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            'Vous vous êtes bien désinscrit !'
+        );
+
+        return $this->redirectToRoute('event.events');
     }
 }

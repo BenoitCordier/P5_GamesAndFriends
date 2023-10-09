@@ -20,10 +20,10 @@ class Map
                 iconSize: [30, 42],
                 iconAnchor: [15, 42],
                 popupAnchor: [5, -35]
-            });
+        });
         this.createMap();
         this.searchMapForm = document.getElementById('searchMapForm');
-        this.searchMapForm.addEventListener('submit', (event) => {event.preventDefault(); return this.search()}, false);
+        this.searchMapForm.addEventListener('submit', (event) => {event.preventDefault(); document.getElementById('modalSearch').style.display = 'block'; document.getElementById('modalError').style.display = 'none'; return this.search()}, false);
     }
 
     // Map creation
@@ -87,7 +87,13 @@ class Map
             })
             .then(getBodyAndStatus)
             .then(async (result) => {
+                if (result.status === 400) {
+                    document.getElementById('modalSearch').style.display = 'none';
+                    document.getElementById('modalError').style.display = 'block';
+                }
                 if (result.status !== 202) {
+                    document.getElementById('modalSearch').style.display = 'none';
+                    document.getElementById('modalError').style.display = 'block';
                     return Promise.reject(result)
                 } else {
                     // Get longitude/latitude
@@ -101,19 +107,34 @@ class Map
                     // Rebind name and longitude/latitude
                     for (let j = 0; j < data.length; j++) {
                         coordinates[j].name = data[j].name;
+                        coordinates[j].id = data[j].id;
                     }
+                    console.log(data);
                     // Generate marker
                     // Remove previous markers
                     this.markerClusterGroup.clearLayers();
                     // Add each markers to the cluster
-                    for (let i = 0; i < coordinates.length; i++) {
-                        this.markerClusterGroup.addLayer(L.marker([coordinates[i].lat, coordinates[i].lon], {
-                            icon: this.icon
-                        })
-                        .bindPopup('Name : ' + coordinates[i].name + '</br> GameId : ' + this.searchGameId)
-                        .openPopup());
+                    if (this.searchStyle === 'player') {
+                        for (let i = 0; i < coordinates.length; i++) {
+                            console.log(coordinates[i]);
+                            this.markerClusterGroup.addLayer(L.marker([coordinates[i].lat, coordinates[i].lon], {
+                                icon: this.icon
+                            })
+                            .bindPopup('<h6 class="mt-4" style="text-align: center">' + coordinates[i].name + '</h6> <div style="display:flex; justify-content:center; align-items:center"><a class="btn btn-outline-primary btn-sm mt-2" target="_blank" style="color: black" onmouseover="this.style.color=\'white\';" onmouseout="this.style.color=\'black\';" href="user/viewProfile/' + coordinates[i].id + '" role="button">Voir le profil</a></div>')
+                            .openPopup());
+                        }
+                    }
+                    if (this.searchStyle === 'event') {
+                        for (let i = 0; i < coordinates.length; i++) {
+                            this.markerClusterGroup.addLayer(L.marker([coordinates[i].lat, coordinates[i].lon], {
+                                icon: this.icon
+                            })
+                            .bindPopup('<h6 class="mt-4" style="text-align: center">' + coordinates[i].name + '</h6> <div style="display:flex; justify-content:center; align-items:center"><a class="btn btn-outline-primary btn-sm mt-2" target="_blank" style="color: black" onmouseover="this.style.color=\'white\';" onmouseout="this.style.color=\'black\';" href="event/viewEvent/' + coordinates[i].id + '" role="button">Détails de l&#39;évènement</a></div>')
+                            .openPopup());
+                        }
                     }
                     this.map.addLayer(this.markerClusterGroup);
+                    document.getElementById('modalSearch').style.display = 'none';
                 }
             })
             .catch(err => console.log(err));

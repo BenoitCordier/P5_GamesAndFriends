@@ -9,6 +9,10 @@
             Modifier un évènement
         </h1>
 
+        <a href="{{ path('event.myevent') }}" class="btn btn-outline-primary">
+            Revenir en arrière
+        </a>
+
         {{ form_start(form) }}
 
         <div class="form-group">
@@ -76,4 +80,5 @@
 
         {{ form_end(form) }}
     </div>
+    <script src="{{ asset('js/locationScript.js') }}"></script>
 {% endblock %}

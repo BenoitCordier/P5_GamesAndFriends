@@ -50,7 +50,7 @@ class Event
     private ?User $eventAdmin = null;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'events')]
-    private Collection $eventPlayer;
+    private Collection $eventPlayers;
 
     #[ORM\Column]
     #[Assert\NotNull()]
@@ -64,7 +64,7 @@ class Event
 
     public function __construct()
     {
-        $this->eventPlayer = new ArrayCollection();
+        $this->eventPlayers = new ArrayCollection();
         $this->eventStartAt = new \DateTime();
         $this->eventEndAt = new \DateTime();
     }
@@ -149,15 +149,15 @@ class Event
     /**
      * @return Collection<int, User>
      */
-    public function getEventPlayer(): Collection
+    public function getEventPlayers(): Collection
     {
-        return $this->eventPlayer;
+        return $this->eventPlayers;
     }
 
     public function addEventPlayer(User $eventPlayer): static
     {
-        if (!$this->eventPlayer->contains($eventPlayer)) {
-            $this->eventPlayer->add($eventPlayer);
+        if (!$this->eventPlayers->contains($eventPlayer)) {
+            $this->eventPlayers->add($eventPlayer);
         }
 
         return $this;
@@ -165,7 +165,7 @@ class Event
 
     public function removeEventPlayer(User $eventPlayer): static
     {
-        $this->eventPlayer->removeElement($eventPlayer);
+        $this->eventPlayers->removeElement($eventPlayer);
 
         return $this;
     }

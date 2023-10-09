@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Games & Friends - Modifier mon adresse{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mt-4">
+            Modifier mon adresse
+        </h1>
+        <a href="{{ path('user.index', { id: app.user.id }) }}" class="btn btn-outline-primary">
+            Revenir en arrière
+        </a>
+        {{ form_start(form) }}
+        <div class="autocomplete-container form-group" id="autocomplete-container">
+            {{form_label(form.location)}}
+            <small id="adressHelp" class="form-text text-muted">Veuillez commencer à taper votre adresse puis selectionnez la dans la liste.</small>
+            <div id="input_container" class="input-container">
+                {{form_widget(form.location)}}
+                <div class="form-error">
+                {{ form_errors(form.location) }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_row(form.submit) }}
+        </div>
+        {{ form_end(form) }}
+    </div>
+    <script src="{{ asset('js/locationScript.js') }}"></script>
+{% endblock %}

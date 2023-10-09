@@ -85,10 +85,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank]
     private ?string $location = null;
 
+    #[ORM\OneToMany(mappedBy: 'firstUser', targetEntity: MessageThread::class, orphanRemoval: true)]
+    private Collection $firstUser;
+
+    #[ORM\OneToMany(mappedBy: 'secondUser', targetEntity: MessageThread::class, orphanRemoval: true)]
+    private Collection $secondUser;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
+        $this->games = new ArrayCollection();
+        $this->firstUser = new ArrayCollection();
+        $this->secondUser = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -273,4 +282,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, MessageThread>
+     */
+    public function getFirstUser(): Collection
+    {
+        return $this->firstUser;
+    }
+
+    public function addFirstUser(MessageThread $firstUser): static
+    {
+        if (!$this->firstUser->contains($firstUser)) {
+            $this->firstUser->add($firstUser);
+            $firstUser->setFirstUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFirstUser(MessageThread $firstUser): static
+    {
+        if ($this->firstUser->removeElement($firstUser)) {
+            // set the owning side to null (unless already changed)
+            if ($firstUser->getFirstUser() === $this) {
+                $firstUser->setFirstUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MessageThread>
+     */
+    public function getSecondUser(): Collection
+    {
+        return $this->secondUser;
+    }
+
+    public function addSecondUser(MessageThread $secondUser): static
+    {
+        if (!$this->secondUser->contains($secondUser)) {
+            $this->secondUser->add($secondUser);
+            $secondUser->setSecondUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSecondUser(MessageThread $secondUser): static
+    {
+        if ($this->secondUser->removeElement($secondUser)) {
+            // set the owning side to null (unless already changed)
+            if ($secondUser->getSecondUser() === $this) {
+                $secondUser->setSecondUser(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

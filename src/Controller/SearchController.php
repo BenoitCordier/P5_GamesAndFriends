@@ -17,6 +17,7 @@ class SearchController extends AbstractController
 
         foreach($users as $user) {
             $arrayCollection[] = array(
+                'id' => $user->getId(),
                 'name' => $user->getName(),
                 'location' => $user->getLocation()
             );
@@ -34,6 +35,7 @@ class SearchController extends AbstractController
 
         foreach ($events as $event) {
             $arrayCollection[] = array(
+                'id' => $event->getId(),
                 'name' => $event->getName(),
                 'location' => $event->getLocation()
             );

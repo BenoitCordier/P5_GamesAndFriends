@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Games & Friends - {{event.name}}{% endblock %}
+
+{% block body %}
+{% set playerCount = event.eventMaxPlayer - event.eventPlayers|length  %}
+    <div class="container mt-4">
+        <h1 class="mt-4">{{event.name}}</h1>
+        {% if playerCount <= 0 %}
+            <h5 class="mt-4">- Complet -</h5>
+        {% endif %}
+        <div>
+        <a class="btn btn-outline-primary m-4" href="{{ path('event.myevent') }}">Revenir en arrière</a>
+        {% if event.eventPlayers.contains(app.user) %}
+        <a class="btn btn-outline-primary m-4" href="{{ path('event.quit', { id: app.user.id, eventId: event.id })}}">Se désinscrire</a>
+        {% else %}
+            {% if playerCount > 0 %}
+            <a class="btn btn-outline-primary m-4" href="{{ path('event.join', { id: app.user.id, eventId: event.id })}}" role="button">S'inscrire</a>
+            {% endif %}
+        {% endif %}
+        {% if event.eventAdmin == app.user or app.user.roles[0] is same as("ROLE_ADMIN") %}
+        <a class="btn btn-outline-primary m-4" href="" role="button">Contacter les participants</a>
+        {% else %}
+        <a class="btn btn-outline-primary m-4" href="" role="button">Contacter l'organisateur</a>
+        {% endif %}
+        </div>
+        <table class="table">
+            <tr>
+                <th scope="row" colspan="2"><h4>Informations générales</h4></th>
+            </tr>
+            <tr>
+                <th scope="row">Nom</th>
+                <td>{{event.name}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Jeu</th>
+                <td>{{event.eventGame}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Nombre de places<br><small>(restantes / totales)</small></th>
+                <td> {{playerCount}} / {{event.eventMaxPlayer}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Date de début</th>
+                <td>{{event.eventStartAt|date('d/m/y H:i')}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Date de fin</th>
+                <td>{{event.eventEndAt|date('d/m/y H:i')}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Adresse</th>
+                <td>{{event.location}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Description</th>
+                <td>{{event.eventDescription}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Organisateur</th>
+                <td>{{event.eventAdmin}}</td>
+            </tr>
+        </table>
+        <table class="table">
+            <tr>
+                <th scope="row" colspan="2"><h4>Participants</h4></th>
+            </tr>
+            {% for eventPlayer in event.eventPlayers|sort((a, b) => a.name <=> b.name) %}
+            <tr>
+                <td scope="row">{{eventPlayer}}</td>
+                {% if event.eventAdmin == app.user or app.user.roles[0] is same as("ROLE_ADMIN") %}
+                <td><a class="btn btn-outline-primary btn-sm" href="{{ path('event.quit', { id: eventPlayer.id, eventId: event.id })}}" class="btn btn-outline-primary" role="button">Supprimer</a></td>{% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

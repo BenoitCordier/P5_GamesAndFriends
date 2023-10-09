@@ -7,7 +7,7 @@ function addressAutocomplete(containerElement, callback, options) {
     const inputContainerElement = document.getElementById("input_container");
 
     // Create input element
-    const inputElement = document.getElementById("signin_location") || document.getElementById("event_location");
+    const inputElement = document.getElementById("signin_location") || document.getElementById("event_location") || document.getElementById("user_location_location");
     inputElement.setAttribute("type", "text");
     inputElement.setAttribute("class", "form-control");
     inputElement.setAttribute("placeholder", options.placeholder);
