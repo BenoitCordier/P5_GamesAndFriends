@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Games & Friends - Gestions des utilisateurs{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+    {% if not users is same as([]) %}
+        <h1 class="mt-4">Utilisateurs</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-dismissible alert-success mt-4">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+        <small>
+            <div class="count mt-4">
+                <p>{{ users.getTotalItemCount }} utilisateurs sont inscrits sur le site.</p>
+            </div>
+        </small>
+        <div class="navigation">
+            {{ knp_pagination_render(users) }}
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Nom d'utilisateur</th>
+                    <th scope="col">Prénom</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Adresse email</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr class="table-light">
+                    <th scope="row">{{user.name}}</th>
+                    <th scope="row">{{user.firstName}}</th>
+                    <th scope="row">{{user.lastName}}</th>
+                    <th scope="row">{{user.email}}</th>
+                    <td><a href="" class="btn btn-outline-primary">Modifier</a></td>
+                    <td><a href=""class="btn btn-outline-primary">Supprimer</a></td>
+                </tr>
+            </tbody>
+
+        {% endfor %}
+        </table>
+        <div class="navigation">
+            {{ knp_pagination_render(users) }}
+        </div>
+    {% else %}
+        <div class="mt-4">Aucun utilisateur n'est enregistré.</div>
+    {% endif %}
+    </div>
+{% endblock %}

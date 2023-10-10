@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Games & Friends - Inscription{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mt-4">Inscription</h1>
+        <a href="{{ path('home.index') }}" class="btn btn-outline-primary">
+            Revenir à l'accueil
+        </a>
+
+        {{ form_start(form) }}
+
+        <div class="form-group">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
+            <div class="form-error">
+                {{ form_errors(form.name) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.firstName) }}
+            {{ form_widget(form.firstName) }}
+            <div class="form-error">
+                {{ form_errors(form.firstName) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.lastName) }}
+            {{ form_widget(form.lastName) }}
+            <div class="form-error">
+                {{ form_errors(form.lastName) }}
+            </div>
+        </div>
+
+        <div class="autocomplete-container form-group" id="autocomplete-container">
+            {{form_label(form.location)}}
+            <small id="adressHelp" class="form-text text-muted">Veuillez commencer à taper votre adresse puis selectionnez la dans la liste.</small>
+            <div id="input_container" class="input-container">
+                {{form_widget(form.location)}}
+                <div class="form-error">
+                {{ form_errors(form.location) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.email) }}
+            <small id="emailHelp" class="form-text text-muted">Votre adresse mail ne sera utilisée qu'à des fins d'authentifications et ne sera jamais communiqué à quiconque.</small>
+            {{ form_widget(form.email) }}
+            <div class="form-error">
+                {{ form_errors(form.email) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_widget(form.plainPassword) }}
+            <div class="form-error">
+                {{ form_errors(form.plainPassword) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+        <label class="form-check-label mt-4">Mes jeux</label>
+            {% for field in form.games %}
+                <div class="form-check mt-4">
+                    {{ form_widget(field, {'attr': {'class': 'form-check-input'}}) }}
+                    {{ form_label(field) }}
+                </div>
+            {% endfor %}
+            <div class="form-error">
+                {{ form_errors(form.games) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_row(form.submit) }}
+        </div>
+
+        {{ form_end(form) }}
+        {% include "partials/_push.html.twig" %}
+    </div>
+    <script src="{{ asset('js/locationScript.js') }}"></script>
+{% endblock %}

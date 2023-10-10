@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Games & Friends - Accueil{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-dismissible alert-success mt-4">
+            {{ message }}
+        </div>
+    {% endfor %}
+        <h1 class="display-4">Bienvenue sur Games & Friends</h1>
+        <p class="lead">Ce site est une plateforme de géolocalisation qui vous permettra de trouver des joueurs pour tous vos jeux préférés !<br />
+        Vous aurez également la possibilité de rechercher et vous inscrire aux différents évènements (tournois, conventions, ...) organisés par les autres membres.
+        Vous pourrez même créer les votres !<br />
+        De plus, la messagerie intégrée vous donnera la possibilité de communiquer avec les autres joueurs inscrits pour que vous puissiez organiser vos parties dans les meilleurs conditions.</p>
+        <hr class="my-4">
+        <p>Pour commencer à utiliser l'application, rendez-vous sur le formulaire d'inscription !</p>
+        <p class="lead">
+        <a class="btn btn-outline-primary" href="{{ path('security.signin') }}" role="button">Inscription</a>
+        </p>
+        {% include "partials/_push.html.twig" %}
+    </div>
+{% endblock %}

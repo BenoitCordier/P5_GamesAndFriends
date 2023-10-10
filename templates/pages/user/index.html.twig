@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Games & Friends - Mon profil{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mt-4">Mon profil</h1>
+        {% for message in app.flashes('success') %}
+        <div class="alert alert-dismissible alert-success mt-4">
+            {{ message }}
+        </div>
+        {% endfor %}
+        <table class="table">
+            <tr>
+                <th scope="row" colspan="2"><h4>Informations générales</h4></th>
+            </tr>
+            <tr>
+                <th scope="row">Nom d'utilisateur</th>
+                <td>{{user.name}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Prénom</th>
+                <td>{{user.firstName}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Nom</th>
+                <td>{{user.lastName}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Date d'inscription</th>
+                <td>{{user.createdAt|date('d/m/y H:i')}}</td>
+            </tr>
+            <tr>
+                <td><a class="btn btn-outline-primary" href="{{ path('user.edit', { id: app.user.id }) }}" role="button">Modifier</a></td>
+            </tr>
+        </table>
+        <table class="table">
+            <tr>
+                <th scope="row" colspan="2"><h4>Mes jeux</h4></th>
+            </tr>
+            {% for game in user.games|sort((a, b) => a.gameName <=> b.gameName) %}
+            <tr>
+                <td scope="row">{{game}}</td>
+                {% if user == app.user or app.user.roles[0] is same as("ROLE_ADMIN") %}
+                <td><a class="btn btn-outline-primary btn-sm" href="{{ path('user.remove.game', { id: app.user.id, gameId: game.id }) }}" role="button">Supprimer</a></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            <tr>
+                <td><a class="btn btn-outline-primary" href="{{ path('user.edit.game', { id: app.user.id }) }}" role="button">Ajouter des jeux</a></td>
+            </tr>
+        </table>
+        <table class="table">
+            <tr>
+                <th scope="row" colspan="2"><h4>Mon adresse</h4></th>
+            </tr>
+            <tr>
+                <td>{{user.location}}</td>
+            </tr>
+            <tr>
+                <td><a class="btn btn-outline-primary" href="{{ path('user.edit.location', { id: app.user.id }) }}" role="button">Modifier</a></td>
+            </tr>
+        </table>
+        <table class="table">
+            <tr>
+                <th scope="row" colspan="2"><h4>Informations de sécurité</h4></th></tr>
+            <tr>
+                <th scope="row">Adresse email</th>
+                <td>{{user.email}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Mot de passe</th>
+                <td>********</td>
+            </tr>
+            <tr>
+                <td><a class="btn btn-outline-primary" href="{{ path('user.edit.password', { id: app.user.id }) }}" role="button">Modifier mon mot de passe</a></td>
+            </tr>
+        </table>
+        {% include "partials/_push.html.twig" %}
+    </div>
+{% endblock %}

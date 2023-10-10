@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Games & Friends - Modifier mes jeux{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mt-4">Modifier mes jeux</h1>
+        <a href="{{ path('user.index', { id: app.user.id }) }}" class="btn btn-outline-primary">
+            Revenir en arrière
+        </a>
+
+        {{ form_start(form) }}
+
+        <div class="form-group">
+            {% for field in form.games %}
+                <div class="form-check mt-4">
+                    {{ form_widget(field, {'attr': {'class': 'form-check-input'}}) }}
+                    {{ form_label(field) }}
+                </div>
+            {% endfor %}
+            <div class="form-error">
+                {{ form_errors(form.games) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_row(form.submit) }}
+        </div>
+
+        {{ form_end(form) }}
+        {% include "partials/_push.html.twig" %}
+    </div>
+{% endblock %}

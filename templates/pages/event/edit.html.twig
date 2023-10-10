@@ -1,0 +1,85 @@
+{% extends "base.html.twig" %}
+{% set showEventNav = true %}
+
+{% block title %}Games & Friends - Modifier un évènement{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mt-4">
+            Modifier un évènement
+        </h1>
+
+        <a href="{{ path('event.myevent') }}" class="btn btn-outline-primary">
+            Revenir en arrière
+        </a>
+
+        {{ form_start(form) }}
+
+        <div class="form-group">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
+            <div class="form-error">
+                {{ form_errors(form.name) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.eventDescription) }}
+            {{ form_widget(form.eventDescription) }}
+            <div class="form-error">
+                {{ form_errors(form.eventDescription) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.eventStartAt) }}
+            {{ form_widget(form.eventStartAt) }}
+            <div class="form-error">
+                {{ form_errors(form.eventStartAt) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.eventEndAt) }}
+            {{ form_widget(form.eventEndAt) }}
+            <div class="form-error">
+                {{ form_errors(form.eventEndAt) }}
+            </div>
+        </div>
+
+        <div class="autocomplete-container form-group" id="autocomplete-container">
+            {{form_label(form.location)}}
+            <small id="adressHelp" class="form-text text-muted">Veuillez commencer à taper votre adresse puis selectionnez la dans la liste.</small>
+            <div id="input_container" class="input-container">
+                {{form_widget(form.location)}}
+                <div class="form-error">
+                {{ form_errors(form.location) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.eventMaxPlayer) }}
+            {{ form_widget(form.eventMaxPlayer) }}
+            <div class="form-error">
+                {{ form_errors(form.eventMaxPlayer) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.eventGame) }}
+            {{ form_widget(form.eventGame) }}
+            <div class="form-error">
+                {{ form_errors(form.eventGame) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_row(form.submit) }}
+        </div>
+
+        {{ form_end(form) }}
+    {% include "partials/_push.html.twig" %}
+    </div>
+    <script src="{{ asset('js/locationScript.js') }}"></script>
+{% endblock %}

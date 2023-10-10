@@ -1,0 +1,48 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Games & Friends - Modifier mon profil{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mt-4">
+            Modifier mon profil
+        </h1>
+
+        <a href="{{ path('user.index', { id: app.user.id }) }}" class="btn btn-outline-primary">
+            Revenir en arrière
+        </a>
+
+        {{ form_start(form) }}
+
+        <div class="form-group">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
+            <div class="form-error">
+                {{ form_errors(form.name) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.firstName) }}
+            {{ form_widget(form.firstName) }}
+            <div class="form-error">
+                {{ form_errors(form.firstName) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.lastName) }}
+            {{ form_widget(form.lastName) }}
+            <div class="form-error">
+                {{ form_errors(form.lastName) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_row(form.submit) }}
+        </div>
+
+        {{ form_end(form) }}
+        {% include "partials/_push.html.twig" %}
+    </div>
+{% endblock %}
