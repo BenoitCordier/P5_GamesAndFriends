@@ -63,9 +63,13 @@
         </div>
 
         <div class="form-group">
-            {{ form_label(form.games) }}
-            <small id="gameHelp" class="form-text text-muted">Choisissez un jeu pour votre inscritpion. Vous pourrez en ajouter ultérieurement dans votre profil.</small>
-            {{ form_widget(form.games) }}
+        <label class="form-check-label mt-4">Mes jeux</label>
+            {% for field in form.games %}
+                <div class="form-check mt-4">
+                    {{ form_widget(field, {'attr': {'class': 'form-check-input'}}) }}
+                    {{ form_label(field) }}
+                </div>
+            {% endfor %}
             <div class="form-error">
                 {{ form_errors(form.games) }}
             </div>
@@ -76,6 +80,7 @@
         </div>
 
         {{ form_end(form) }}
+        {% include "partials/_push.html.twig" %}
     </div>
     <script src="{{ asset('js/locationScript.js') }}"></script>
 {% endblock %}

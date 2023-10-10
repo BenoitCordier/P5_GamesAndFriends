@@ -1,4 +1,23 @@
 /* GENERAL */
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.container {
+    min-height: 100%;
+
+    /* Equal to height of footer */
+    /* But also accounting for potential margin-bottom of last child */
+    margin-bottom: -100px;
+}
+
+.footer,
+.push {
+    height: 100px;
+}
+
 a {
     text-decoration: none;
 }
@@ -7,6 +26,11 @@ a:hover {
     color: rgb(162,0,109);
     text-decoration: none;
 }
+
+.event td {
+    text-align: center;
+}
+
 /* MAP */
 html, body, #map {
     width: 100%;
@@ -235,6 +259,12 @@ html, body, #map {
     color: rgba(0, 0, 0, 0.6);
 }
 
-/* GAMELIST */
+/* FOOTER */
 
+.footerIcon {
+    color: rgba(255, 255, 255, 0.5);
+}
 
+.footerIcon:hover {
+    color: white;
+}

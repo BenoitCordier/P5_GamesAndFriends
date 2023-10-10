@@ -1,16 +1,17 @@
 {% extends 'base.html.twig' %}
+{% set showEventNav = true %}
 
 {% block title %}Games & Friends - {{event.name}}{% endblock %}
 
 {% block body %}
 {% set playerCount = event.eventMaxPlayer - event.eventPlayers|length  %}
-    <div class="container mt-4">
+    <div id="top" class="container mt-4">
         <h1 class="mt-4">{{event.name}}</h1>
         {% if playerCount <= 0 %}
             <h5 class="mt-4">- Complet -</h5>
         {% endif %}
         <div>
-        <a class="btn btn-outline-primary m-4" href="{{ path('event.myevent') }}">Revenir en arrière</a>
+        <a class="btn btn-outline-primary mt-4 mb-4" href="{{ path('event.myevent') }}">Revenir en arrière</a>
         {% if event.eventPlayers.contains(app.user) %}
         <a class="btn btn-outline-primary m-4" href="{{ path('event.quit', { id: app.user.id, eventId: event.id })}}">Se désinscrire</a>
         {% else %}
@@ -19,9 +20,9 @@
             {% endif %}
         {% endif %}
         {% if event.eventAdmin == app.user or app.user.roles[0] is same as("ROLE_ADMIN") %}
-        <a class="btn btn-outline-primary m-4" href="" role="button">Contacter les participants</a>
+        <a class="btn btn-outline-primary mt-4 mb-4 mr-4" href="" role="button">Contacter les participants WIP</a>
         {% else %}
-        <a class="btn btn-outline-primary m-4" href="" role="button">Contacter l'organisateur</a>
+        <a class="btn btn-outline-primary mt-4 mb-4 mr-4" href="{{ path('message.redirect', { id: event.eventAdmin.id })}}" role="button">Contacter l'organisateur</a>
         {% endif %}
         </div>
         <table class="table">
@@ -73,5 +74,7 @@
             </tr>
             {% endfor %}
         </table>
+        <a href="#top" class="btn btn-outline-primary mt-2">Revenir en haut de la page</a>
+        {% include "partials/_push.html.twig" %}
     </div>
 {% endblock %}

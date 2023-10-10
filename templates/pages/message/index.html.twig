@@ -4,33 +4,34 @@
 
 {% block body %}
     <div class="container mt-4">
-    {% if not events is same as([]) %}
+    {% if not messageThreads is same as([]) %}
         <h1 class="mt-4">Mes conversations</h1>
-
         <div class="navigation">
-            {{ knp_pagination_render(events) }}
+            {{ knp_pagination_render(messageThreads) }}
         </div>
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col">Conversation avec</th>
+                    <th scope="col" colspan="2">Correspondants</th>
                     <th scope="col">Dernier message le </th>
                 </tr>
             </thead>
             <tbody>
-            {% for event in events %}
+            {% for messageThread in messageThreads|sort((a, b) => a.updatedAt <=> b.updatedAt) %}
                 <tr class="table-light">
-                    <th scope="row">{{event.name}}</th>
-                    <th scope="row">{{event.eventStartAt|date('d/m/y H:i')}}</th>
+                    <td scope="row">{{messageThread.firstUser}}</td>
+                    <td scope="row">{{messageThread.secondUser}}</td>
+                    <td scope="row"><a href="{{ path('message.newMessageInThread', { messageThreadId: messageThread.id })}}">{{messageThread.updatedAt|date('d/m/y H:i')}}</a></td>
                 </tr>
             </tbody>
             {% endfor %}
         </table>
         <div class="navigation">
-            {{ knp_pagination_render(events) }}
+            {{ knp_pagination_render(messageThreads) }}
         </div>
     {% else %}
         <div class="mt-4">Aucune conversation n'existe.</div>
     {% endif %}
+    {% include "partials/_push.html.twig" %}
     </div>
 {% endblock %}

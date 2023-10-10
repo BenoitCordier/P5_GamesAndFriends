@@ -1,10 +1,7 @@
 <nav class="navbar navbar-expand-sm bg-primary" data-bs-theme="dark">
     <div class="container-fluid">
         <h3 class="mt-2 mr-4" style="color: white">Bonjour {{ app.user.name }} !</h3>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor04" aria-controls="navbarColor04" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarColor04">
+        <div class="navbar-collapse" id="navbarColor04">
             <ul class="navbar-nav me-auto">
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('home.map') }}">Carte</a>
@@ -13,7 +10,7 @@
                 <a class="nav-link" href="{{ path('user.index', { id: app.user.id }) }}">Profil</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Messages</a>
+                <a class="nav-link" href="{{ path('message.index') }}">Messages</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('event.myevent') }}">&#201vènements</a>

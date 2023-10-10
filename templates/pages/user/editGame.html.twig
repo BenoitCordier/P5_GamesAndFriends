@@ -5,15 +5,19 @@
 {% block body %}
     <div class="container">
         <h1 class="mt-4">Modifier mes jeux</h1>
-        <a href="{{ path('home.index') }}" class="btn btn-outline-primary">
-            Revenir à l'accueil
+        <a href="{{ path('user.index', { id: app.user.id }) }}" class="btn btn-outline-primary">
+            Revenir en arrière
         </a>
 
         {{ form_start(form) }}
 
         <div class="form-group">
-            {{ form_label(form.games) }}
-            {{ form_widget(form.games) }}
+            {% for field in form.games %}
+                <div class="form-check mt-4">
+                    {{ form_widget(field, {'attr': {'class': 'form-check-input'}}) }}
+                    {{ form_label(field) }}
+                </div>
+            {% endfor %}
             <div class="form-error">
                 {{ form_errors(form.games) }}
             </div>
@@ -24,5 +28,6 @@
         </div>
 
         {{ form_end(form) }}
+        {% include "partials/_push.html.twig" %}
     </div>
 {% endblock %}

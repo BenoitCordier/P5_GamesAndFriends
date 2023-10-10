@@ -122,7 +122,7 @@ class SigninType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
                 'attr' => [
-                    'class' => 'form-select'
+                    'class' => 'form-check'
                 ],
                 'label' => "Jeux",
                 'label_attr' => [

@@ -26,18 +26,12 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         // Game
-        $games = [];
-        for ($i = 1; $i <= 20; $i++) {
-            $game = new Game();
-            $game->setGameName($this->faker->word());
-
-            $games[] = $game;
-            $manager->persist($game);
-        }
-
+        // execute with --purge-exclusions=game
         // User
         $users = [];
+        $games = $manager->getRepository(Game::class);
         for ($j = 1; $j <= 20; $j++) {
+            $id = mt_rand(1, 11);
             $user = new User();
             $user->setName($this->faker->userName())
             ->setFirstName($this->faker->firstName())
@@ -48,7 +42,8 @@ class AppFixtures extends Fixture
             ->setLocation($this->faker->address());
 
             for ($k = 1; $k < mt_rand(1, 5); $k++) {
-                $user->addGame($games[mt_rand(0, count($games) - 1)]);
+                $uniqueGame = $games->findOneBy(['id' => $id]);
+                $user->addGame($uniqueGame);
             }
             $users[] = $user;
             $manager->persist($user);
@@ -59,7 +54,7 @@ class AppFixtures extends Fixture
         for ($l = 0; $l <= 20 ; $l++) {
             $event = new Event();
             $event->setName($this->faker->userName())
-            ->setEventGame($games[mt_rand(0, count($games) - 1)])
+            ->setEventGame($games->find(mt_rand(1, 11)))
             ->setEventdescription($this->faker->paragraph())
             ->setEventAdmin($users[mt_rand(0, count($users) - 1)])
             ->setEventMaxPlayer(mt_rand(2, 20))

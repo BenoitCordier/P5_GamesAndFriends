@@ -9,6 +9,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SearchController extends AbstractController
 {
+    /**
+     * Search for all players for a specific game
+     *
+     * @param Game $game
+     * @return JsonResponse
+     */
     #[Route('/search/player/{id}', name: 'search.player', options: ['expose' => true], methods: ['GET', 'POST'])]
     public function searchPlayer(Game $game): JsonResponse
     {
@@ -27,6 +33,12 @@ class SearchController extends AbstractController
         return $response;
     }
 
+    /**
+     * Search for all event for a specific game
+     *
+     * @param Game $game
+     * @return JsonResponse
+     */
     #[Route('/search/event/{id}', name: 'search.event', options: ['expose' => true], methods: ['GET', 'POST'])]
     public function searchEvent(Game $game): JsonResponse
     {

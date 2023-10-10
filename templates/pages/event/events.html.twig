@@ -21,30 +21,31 @@
         <div class="navigation">
             {{ knp_pagination_render(events) }}
         </div>
-        <table class="table table-hover">
+        <table class="table table-hover event">
             <thead>
                 <tr>
                     <th scope="col">Nom</th>
                     <th scope="col">Jeu</th>
-                    <th scope="col">Date de début</th>
-                    <th scope="col">Date de fin</th>
-                    <th scope="col">Nombre de joueur maximum</th>
+                    <th scope="col">Dates</th>
+                    <th scope="col">Joueurs maximum</th>
                     <th scope="col">Localisation</th>
+                    <th scope="col" colspan="2">Action</th>
                 </tr>
             </thead>
             <tbody>
             {% for event in events %}
                 <tr class="table-light">
-                    <th scope="row"><a href="{{ path('event.viewEvent', { id: event.id })}}">{{event.name}}</a></th>
-                    <th scope="row">{{event.eventGame}}</th>
-                    <th scope="row">{{event.eventStartAt|date('d/m/y H:i')}}</th>
-                    <th scope="row">{{event.eventEndAt|date('d/m/y H:i')}}</th>
-                    <th scope="row">{{event.eventMaxPlayer}}</th>
-                    <th scope="row">{{event.location}}</th>
-                    <td><a href="{{ path('event.quit', { id: app.user.id, eventId: event.id })}}" class="btn btn-outline-primary">Se désinscrire</a></td>
+                    <td scope="row">{{event.name}}</td>
+                    <td scope="row">{{event.eventGame}}</td>
+                    <td scope="row">Du {{event.eventStartAt|date('d/m/y H:i')}} au {{event.eventEndAt|date('d/m/y H:i')}}</td>
+                    <td scope="row">{{event.eventMaxPlayer}}</td>
+                    <td scope="row">{{event.location}}</td>
+                    <td scope="row" class="btn-group-vertical">
+                        <a href="{{ path('event.quit', { id: app.user.id, eventId: event.id })}}" class="btn btn-outline-primary btn-sm">Se désinscrire</a>
+                        <a href="{{ path('event.viewEvent', { id: event.id })}}" class="btn btn-outline-primary btn-sm">Détails</a>
+                    </td>
                 </tr>
             </tbody>
-
         {% endfor %}
         </table>
         <div class="navigation">
@@ -53,5 +54,6 @@
     {% else %}
         <div class="mt-4">Aucun évènement n'est disponible.</div>
     {% endif %}
+    {% include "partials/_push.html.twig" %}
     </div>
 {% endblock %}
