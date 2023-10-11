@@ -268,3 +268,13 @@ html, body, #map {
 .footerIcon:hover {
     color: white;
 }
+
+#contactAdmin {
+    color: rgba(255, 255, 255, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+#contactAdmin:hover {
+    color: black;
+    background-color: white;
+}

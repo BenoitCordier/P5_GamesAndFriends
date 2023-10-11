@@ -12,9 +12,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+#[IsGranted('ROLE_USER', message: "Vous n'avez pas l'autorisation d'accéder à cette page.")]
 class UserController extends AbstractController
 {
     /**
@@ -22,21 +25,14 @@ class UserController extends AbstractController
      *
      * @return Response
      */
+    #[IsGranted(
+        new Expression('is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and user.getEmail() === subject.getEmail())'),
+        subject: 'user',
+        message: "Vous n'avez pas l'autorisation d'accéder à cette page."
+    )]
     #[Route('/user/user/{id}', name: 'user.index', methods: ['GET'])]
     public function index(User $user): Response
     {
-        if (!$this->getUser()) {
-            return $this->redirectToRoute('security.login');
-        }
-
-        if ($this->getUser() !== $user) {
-            $unauthorisedUserId = $this->getUser()->getId();
-
-            return $this->redirectToRoute('user.index', [
-                'id' => $unauthorisedUserId
-            ]);
-        }
-
         return $this->render('pages/user/index.html.twig', [
             'user' => $user
         ]);
@@ -49,20 +45,14 @@ class UserController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
+    #[IsGranted(
+        new Expression('is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and user.getEmail() === subject.getEmail())'),
+        subject: 'user',
+        message: "Vous n'avez pas l'autorisation d'accéder à cette page."
+    )]
     #[Route('/user/edit/{id}', name: 'user.edit', methods: ['GET', 'POST'])]
     public function edit(User $user, Request $request, EntityManagerInterface $manager): Response
     {
-        if (!$this->getUser()) {
-            return $this->redirectToRoute('security.login');
-        }
-        if ($this->getUser() !== $user) {
-            $unauthorisedUserId = $this->getUser()->getId();
-
-            return $this->redirectToRoute('user.index', [
-                'id' => $unauthorisedUserId
-            ]);
-        }
-
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -95,20 +85,14 @@ class UserController extends AbstractController
      * @param UserPasswordHasherInterface $hasher
      * @return Response
      */
+    #[IsGranted(
+        new Expression('is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and user.getEmail() === subject.getEmail())'),
+        subject: 'user',
+        message: "Vous n'avez pas l'autorisation d'accéder à cette page."
+    )]
     #[Route('/user/editPassword/{id}', name: 'user.edit.password', methods: ['GET', 'POST'])]
     public function editPassword(User $user, Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $hasher): Response
     {
-        if (!$this->getUser()) {
-            return $this->redirectToRoute('security.login');
-        }
-        if ($this->getUser() !== $user) {
-            $unauthorisedUserId = $this->getUser()->getId();
-
-            return $this->redirectToRoute('user.index', [
-                'id' => $unauthorisedUserId
-            ]);
-        }
-
         $form = $this->createForm(UserPasswordType::class);
         $form->handleRequest($request);
 
@@ -149,20 +133,14 @@ class UserController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
+    #[IsGranted(
+        new Expression('is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and user.getEmail() === subject.getEmail())'),
+        subject: 'user',
+        message: "Vous n'avez pas l'autorisation d'accéder à cette page."
+    )]
     #[Route('/user/editGame/{id}', name: 'user.edit.game', methods: ['GET', 'POST'])]
     public function editGame(User $user, Request $request, EntityManagerInterface $manager): Response
     {
-        if (!$this->getUser()) {
-            return $this->redirectToRoute('security.login');
-        }
-        if ($this->getUser() !== $user) {
-            $unauthorisedUserId = $this->getUser()->getId();
-
-            return $this->redirectToRoute('user.index', [
-                'id' => $unauthorisedUserId
-            ]);
-        }
-
         $form = $this->createForm(UserGameType::class);
         $form->handleRequest($request);
 
@@ -201,21 +179,14 @@ class UserController extends AbstractController
      * @param GameRepository $gameRepository
      * @return Response
      */
+    #[IsGranted(
+        new Expression('is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and user.getEmail() === subject.getEmail())'),
+        subject: 'user',
+        message: "Vous n'avez pas l'autorisation d'accéder à cette page."
+    )]
     #[Route('/user/removeGame/{id}/{gameId}', name: 'user.remove.game', methods: ['GET', 'POST'])]
     public function removeGame(User $user, int $gameId, EntityManagerInterface $manager, GameRepository $gameRepository): Response
     {
-        if (!$this->getUser()) {
-            return $this->redirectToRoute('security.login');
-        }
-
-        if ($this->getUser() !== $user) {
-            $unauthorisedUserId = $this->getUser()->getId();
-
-            return $this->redirectToRoute('user.index', [
-                'id' => $unauthorisedUserId
-            ]);
-        }
-
         $game = $gameRepository->find($gameId);
         $user->setUpdatedAt(new \DateTimeImmutable());
         $user->removeGame($game);
@@ -239,20 +210,14 @@ class UserController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
+    #[IsGranted(
+        new Expression('is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and user.getEmail() === subject.getEmail())'),
+        subject: 'user',
+        message: "Vous n'avez pas l'autorisation d'accéder à cette page."
+    )]
     #[Route('/user/editLocation/{id}', name: 'user.edit.location', methods: ['GET', 'POST'])]
     public function editLocation(User $user, Request $request, EntityManagerInterface $manager): Response
     {
-        if (!$this->getUser()) {
-            return $this->redirectToRoute('security.login');
-        }
-        if ($this->getUser() !== $user) {
-            $unauthorisedUserId = $this->getUser()->getId();
-
-            return $this->redirectToRoute('user.index', [
-                'id' => $unauthorisedUserId
-            ]);
-        }
-
         $form = $this->createForm(UserLocationType::class);
         $form->handleRequest($request);
 

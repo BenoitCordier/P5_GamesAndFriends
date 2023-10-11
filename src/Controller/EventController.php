@@ -11,8 +11,11 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+#[IsGranted('ROLE_USER', message: "Vous n'avez pas l'autorisation d'accéder à cette page.")]
 class EventController extends AbstractController
 {
     /**
@@ -147,6 +150,11 @@ class EventController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
+    #[IsGranted(
+        new Expression('is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and user === subject.getEventAdmin())'),
+        subject: 'event',
+        message: "Vous n'avez pas l'autorisation d'accéder à cette page."
+    )]
     #[Route('/event/edit/{id}', name: 'event.edit', methods: ['GET', 'POST'])]
     public function edit(Event $event, Request $request, EntityManagerInterface $manager): Response
     {
@@ -178,6 +186,11 @@ class EventController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
+    #[IsGranted(
+        new Expression('is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and user === subject.getEventAdmin())'),
+        subject: 'event',
+        message: "Vous n'avez pas l'autorisation d'accéder à cette page."
+    )]
     #[Route('/event/delete/{id}', name: 'event.delete', methods: ['GET'])]
     public function delete(EntityManagerInterface $manager, Event $event): Response
     {

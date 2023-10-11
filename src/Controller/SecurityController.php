@@ -11,6 +11,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -24,6 +25,10 @@ class SecurityController extends AbstractController
      * @param Request $request
      * @return Response
      */
+    #[IsGranted(
+        'ROLE_ADMIN',
+        message: "Vous n'avez pas l'autorisation d'accéder à cette page."
+    )]
     #[Route('/admin/user', name: 'admin.user.index', methods: ['GET'])]
     public function index(UserRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {

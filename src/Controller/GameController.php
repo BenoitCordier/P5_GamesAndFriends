@@ -10,8 +10,11 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+#[IsGranted('ROLE_ADMIN', message: "Vous n'avez pas l'autorisation d'accéder à cette page.")]
 class GameController extends AbstractController
 {
     /**
@@ -36,6 +39,7 @@ class GameController extends AbstractController
             'games' => $games
         ]);
     }
+
 
     /**
      * Add a new game

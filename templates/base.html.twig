@@ -54,7 +54,9 @@
         {% endblock %}
         {% block body %}{% endblock %}
         {% block footer %}
-            {% include "partials/_footer.html.twig" %}
+            {% if showFooter ?? '' %}
+                {% include "partials/_footer.html.twig" %}
+            {% endif %}
         {% endblock %}
         {% block javascriptEnd %}
         <!-- Bootstrap -->
