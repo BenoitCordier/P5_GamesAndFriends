@@ -41,7 +41,7 @@
             {% endif %}
             {% if app.user %}
                 {% include "partials/_headerUser.html.twig" %}
-                {% if app.user.roles[0] is same as("ROLE_ADMIN") %}
+                {% if showAdminNav ?? '' %}
                     {% include "partials/_headerAdmin.html.twig" %}
                 {% endif %}
                 {% if showEventNav ?? '' %}

@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% set showFooter = true %}
 
 {% block title %}Games & Friends - Gestion des jeux{% endblock %}
 
@@ -48,5 +49,6 @@
     {% else %}
         <div class="mt-4">Aucun jeu n'est disponible.</div>
     {% endif %}
+    {% include "partials/_push.html.twig" %}
     </div>
 {% endblock %}

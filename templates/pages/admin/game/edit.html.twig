@@ -1,4 +1,5 @@
 {% extends "base.html.twig" %}
+{% set showFooter = true %}
 
 {% block body %}
     <div class="container mt-4">
@@ -25,5 +26,6 @@
         </div>
 
         {{ form_end(form) }}
+    {% include "partials/_push.html.twig" %}
     </div>
 {% endblock %}

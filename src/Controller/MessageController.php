@@ -7,9 +7,12 @@ use App\Entity\Message;
 use App\Form\MessageType;
 use App\Entity\MessageThread;
 use Doctrine\ORM\Query\Parameter;
+use Symfony\Component\Mime\Address;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\MessageThreadRepository;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -28,7 +31,7 @@ class MessageController extends AbstractController
      * @return Response
      */
     #[Route('/message/newMessage/{fromId}/{toId}', name: 'message.newMessage', methods: ['GET', 'POST'])]
-    public function newMessage(Request $request, EntityManagerInterface $manager, int $toId): Response
+    public function newMessage(Request $request, EntityManagerInterface $manager, int $toId, MailerInterface $mailer): Response
     {
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
@@ -50,6 +53,17 @@ class MessageController extends AbstractController
 
             $manager->persist($message);
             $manager->flush();
+
+            // Send email to the user to notify the reception of a new message
+            $email = (new TemplatedEmail())
+            ->from(new Address('gamesandfriends@gamesandfriends.com', 'Games & Friends'))
+            ->to($toUser->getEmail())
+            ->subject('Vous avez reçu un nouveau message !')
+            ->htmlTemplate('emails/newMessage.html.twig')
+            ->context([
+                'user' => $toUser,
+            ]);
+            $mailer->send($email);
 
             $this->addFlash(
                 'success',
@@ -73,7 +87,7 @@ class MessageController extends AbstractController
      * @return Response
      */
     #[Route('/message/newMessageInThread/{messageThreadId}', name: 'message.newMessageInThread', methods: ['GET', 'POST'])]
-    public function newMessageInThread(Request $request, EntityManagerInterface $manager, MessageThreadRepository $repository, int $messageThreadId): Response
+    public function newMessageInThread(Request $request, EntityManagerInterface $manager, MessageThreadRepository $repository, int $messageThreadId, MailerInterface $mailer): Response
     {
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
@@ -98,6 +112,17 @@ class MessageController extends AbstractController
 
             $manager->persist($message);
             $manager->flush();
+
+            // Send email to the user to notify the reception of a new message
+            $email = (new TemplatedEmail())
+            ->from('gamesandfriends@gamesandfriends.com')
+            ->to($toUser->getEmail())
+            ->subject('Vous avez reçu un nouveau message !')
+            ->htmlTemplate('emails/newMessage.html.twig')
+            ->context([
+                'user' => $toUser,
+            ]);
+            $mailer->send($email);
 
             $this->addFlash(
                 'success',

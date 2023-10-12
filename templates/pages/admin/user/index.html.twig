@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% set showFooter = true %}
 
 {% block title %}Games & Friends - Gestions des utilisateurs{% endblock %}
 
@@ -50,5 +51,6 @@
     {% else %}
         <div class="mt-4">Aucun utilisateur n'est enregistré.</div>
     {% endif %}
+    {% include "partials/_push.html.twig" %}
     </div>
 {% endblock %}

@@ -7,6 +7,7 @@ use App\Entity\Event;
 use Doctrine\ORM\QueryBuilder;
 use App\Repository\GameRepository;
 use Symfony\Component\Form\AbstractType;
+use Karser\Recaptcha3Bundle\Form\Recaptcha3Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3;
 
 class EventType extends AbstractType
 {
@@ -130,6 +132,11 @@ class EventType extends AbstractType
                     'class' => 'btn btn-outline-primary mt-4'
                 ],
                 'label' => 'Valider'
+            ])
+            ->add('captcha', Recaptcha3Type::class, [
+                'constraints' => new Recaptcha3(),
+                'action_name' => 'contact',
+                'locale' => 'fr',
             ])
         ;
     }

@@ -1,4 +1,7 @@
 {% extends "base.html.twig" %}
+{% set showFooter = true %}
+
+{% block title %}Games & Friends - Ajout d'un jeu{% endblock %}
 
 {% block body %}
     <div class="container mt-4">
@@ -25,5 +28,6 @@
         </div>
 
         {{ form_end(form) }}
+    {% include "partials/_push.html.twig" %}
     </div>
 {% endblock %}

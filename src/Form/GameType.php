@@ -35,7 +35,8 @@ class GameType extends AbstractType
                     'class' => 'btn btn-outline-primary mt-4'
                 ],
                 'label' => 'Valider'
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% set showFooter = true %}
 
 {% block title %}Games & Friends - Toutes les conversations{% endblock %}
 
@@ -14,6 +15,7 @@
                 <tr>
                     <th scope="col" colspan="2">Correspondants</th>
                     <th scope="col">Dernier message le </th>
+                    <th scope="col"> </th>
                 </tr>
             </thead>
             <tbody>
@@ -21,7 +23,8 @@
                 <tr class="table-light">
                     <td scope="row">{{messageThread.firstUser}}</td>
                     <td scope="row">{{messageThread.secondUser}}</td>
-                    <td scope="row"><a href="{{ path('message.newMessageInThread', { messageThreadId: messageThread.id })}}">{{messageThread.updatedAt|date('d/m/y H:i')}}</a></td>
+                    <td scope="row">{{messageThread.updatedAt|date('d/m/y H:i')}}</td>
+                    <td scope="row"><a class="btn btn-outline-primary btn-sm" href="{{ path('message.newMessageInThread', { messageThreadId: messageThread.id })}}">Voir la conversation</a></td>
                 </tr>
             </tbody>
             {% endfor %}

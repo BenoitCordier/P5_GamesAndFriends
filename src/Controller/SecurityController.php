@@ -2,13 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\Game;
 use App\Entity\User;
 use App\Form\SigninType;
 use App\Repository\UserRepository;
+use Symfony\Component\Mime\Address;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -77,7 +79,7 @@ class SecurityController extends AbstractController
      * @return Response
      */
     #[Route('/signin', name: 'security.signin', methods: ['GET', 'POST'])]
-    public function signin(Request $request, EntityManagerInterface $manager): Response
+    public function signin(Request $request, EntityManagerInterface $manager, MailerInterface $mailer): Response
     {
         $user = new User();
 
@@ -91,6 +93,17 @@ class SecurityController extends AbstractController
 
             $manager->persist($user);
             $manager->flush();
+
+            // Send email to the user to notify the registration
+            $email = (new TemplatedEmail())
+            ->from(new Address('gamesandfriends@gamesandfriends.com', 'Games & Friends'))
+            ->to($user->getEmail())
+            ->subject('Votre inscription sur Games & Friends')
+            ->htmlTemplate('emails/registration.html.twig')
+            ->context([
+                'user' => $user,
+            ]);
+            $mailer->send($email);
 
             $this->addFlash(
                 'success',

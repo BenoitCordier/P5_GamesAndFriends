@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+{% set showFooter = true %}
+
+{% block title %}Games & Friends - Formulaire de contact{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mt-4">
+            Formulaire de contact d'un administrateur
+        </h1>
+        <a href="{{ path('user.index', { id: app.user.id }) }}" class="btn btn-outline-primary mt-4 mb-4">
+            Revenir à l'accueil
+        </a>
+        {{ form_start(form) }}
+        <div class="form-group">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
+            <div class="form-error">
+                {{ form_errors(form.name) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email) }}
+            <div class="form-error">
+                {{ form_errors(form.email) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.title) }}
+            {{ form_widget(form.title) }}
+            <div class="form-error">
+                {{ form_errors(form.title) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.content) }}
+            {{ form_widget(form.content) }}
+            <div class="form-error">
+                {{ form_errors(form.content) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_row(form.submit) }}
+        </div>
+        {{ form_end(form) }}
+        {% include "partials/_push.html.twig" %}
+    </div>
+{% endblock %}
