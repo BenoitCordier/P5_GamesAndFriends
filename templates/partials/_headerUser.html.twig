@@ -2,29 +2,30 @@
     <div class="container-fluid">
         <div class="navbar-collapse" id="navbarColor04">
             <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-                <a class="nav-link" style="color: white" href="{{ path('user.index', { id: app.user.id }) }}">{{ app.user.name }}</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('home.map') }}">Carte</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('user.index', { id: app.user.id }) }}">Profil</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('message.index') }}">Messages</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('event.myevent') }}">&#201vènements</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('security.logout') }}">Déconnexion</a>
-            </li>
-            {% if app.user.roles[0] is same as("ROLE_ADMIN") %}
-            <li class="nav_item">
-                <a href="" class="nav-link">Admin</a>
-            </li>
-            {% endif %}
+            <li class="nav-item dropdown">
+                <a id="dropdownNav" class="nav-link dropdown-toggle show" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">{{ app.user.name }}</a>
+                <div id="dropdownMenu" class="dropdown-menu show" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 44px, 0px); display: none; z-index: 9000;" data-popper-placement="bottom-start">
+                    {% if app.user.roles[0] is same as("ROLE_ADMIN") %}
+                    <a class="dropdown-item" href="{{ path('admin.index') }}" target="_blank">Administration</a>
+                    {% else %}
+                    <a class="dropdown-item" href="{{ path('contact.index') }}">Contacter un administrateur</a>
+                    {% endif %}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ path('security.logout') }}">Se déconnecter</a>
+                </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('home.map') }}">Carte</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('user.index', { id: app.user.id }) }}">Profil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('message.index') }}">Messages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('event.myevent') }}">&#201vènements</a>
+                </li>
             </ul>
         </div>
     </div>

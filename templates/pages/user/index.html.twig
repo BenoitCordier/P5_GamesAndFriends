@@ -1,5 +1,4 @@
 {% extends 'base.html.twig' %}
-{% set showFooter = true %}
 
 {% block title %}Games & Friends - Mon profil{% endblock %}
 
@@ -77,6 +76,5 @@
                 <td><a class="btn btn-outline-primary" href="{{ path('user.edit.password', { id: app.user.id }) }}" role="button">Modifier mon mot de passe</a></td>
             </tr>
         </table>
-        {% include "partials/_push.html.twig" %}
     </div>
 {% endblock %}

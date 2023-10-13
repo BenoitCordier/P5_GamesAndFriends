@@ -1,6 +1,5 @@
 {% extends "base.html.twig" %}
 {% set showEventNav = true %}
-{% set showFooter = true %}
 
 {% block title %}Games & Friends - Créer un évènement{% endblock %}
 
@@ -76,7 +75,6 @@
         </div>
 
         {{ form_end(form) }}
-        {% include "partials/_push.html.twig" %}
     </div>
     <script src="{{ asset('js/locationScript.js') }}"></script>
 {% endblock %}

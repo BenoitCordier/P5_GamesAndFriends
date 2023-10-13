@@ -1,12 +1,11 @@
 {% extends 'base.html.twig' %}
-{% set showFooter = true %}
 
 {% block title %}Games & Friends - Modifier mes jeux{% endblock %}
 
 {% block body %}
     <div class="container">
         <h1 class="mt-4">Modifier mes jeux</h1>
-        <a href="{{ path('user.index', { id: app.user.id }) }}" class="btn btn-outline-primary">
+        <a href="{{ path('user.index', { id: app.user.id }) }}" class="btn btn-outline-primary mt-4 mb-4">
             Revenir en arrière
         </a>
 
@@ -29,6 +28,5 @@
         </div>
 
         {{ form_end(form) }}
-        {% include "partials/_push.html.twig" %}
     </div>
 {% endblock %}

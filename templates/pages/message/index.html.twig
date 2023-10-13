@@ -1,10 +1,9 @@
 {% extends 'base.html.twig' %}
-{% set showFooter = true %}
 
 {% block title %}Games & Friends - Toutes les conversations{% endblock %}
 
 {% block body %}
-    <div class="container mt-4">
+    <div id="msgThrd" class="container-fluid mt-4">
     {% if not messageThreads is same as([]) %}
         <h1 class="mt-4">Mes conversations</h1>
         <div class="navigation">
@@ -35,6 +34,5 @@
     {% else %}
         <div class="mt-4">Aucune conversation n'existe.</div>
     {% endif %}
-    {% include "partials/_push.html.twig" %}
     </div>
 {% endblock %}

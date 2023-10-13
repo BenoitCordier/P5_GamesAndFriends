@@ -1,5 +1,4 @@
 {% extends 'base.html.twig' %}
-{% set showFooter = true %}
 
 {% block title %}Games & Friends - Formulaire de contact{% endblock %}
 
@@ -44,6 +43,5 @@
             {{ form_row(form.submit) }}
         </div>
         {{ form_end(form) }}
-        {% include "partials/_push.html.twig" %}
     </div>
 {% endblock %}

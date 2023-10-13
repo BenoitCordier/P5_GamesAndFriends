@@ -1,11 +1,10 @@
 {% extends 'base.html.twig' %}
 {% set showEventNav = true %}
-{% set showFooter = true %}
 
 {% block title %}Games & Friends - Evènements que j'organise{% endblock %}
 
 {% block body %}
-    <div class="container mt-4">
+    <div id="myevent" class="container-fluid mt-4">
     {% if not events is same as([]) %}
         <h1 class="mt-4">Evènements que j'organise</h1>
     {% for message in app.flashes('success') %}
@@ -25,17 +24,17 @@
                     <th scope="col">Dates</th>
                     <th scope="col">Joueurs maximum</th>
                     <th scope="col">Localisation</th>
-                    <th scope="col" colspan="2">Action</th>
+                    <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
             {% for event in events %}
                 <tr class="table-light" href="{{ path('event.viewEvent', { id: event.id })}}">
-                    <td scope="row"><a href="{{ path('event.viewEvent', { id: event.id })}}">{{event.name}}</a></td>
-                    <td scope="row">{{event.eventGame}}</td>
-                    <td scope="row">Du {{event.eventStartAt|date('d/m/y H:i')}} au {{event.eventEndAt|date('d/m/y H:i')}}</td>
-                    <td scope="row">{{event.eventMaxPlayer}}</td>
-                    <td scope="row">{{event.location}}</td>
+                    <td class="align-middle" scope="row"><a href="{{ path('event.viewEvent', { id: event.id })}}">{{event.name}}</a></td>
+                    <td class="align-middle" scope="row">{{event.eventGame}}</td>
+                    <td class="align-middle" scope="row">Du {{event.eventStartAt|date('d/m/y H:i')}} au {{event.eventEndAt|date('d/m/y H:i')}}</td>
+                    <td class="align-middle" scope="row">{{event.eventMaxPlayer}}</td>
+                    <td class="align-middle" scope="row">{{event.location}}</td>
                     {% if event.eventAdmin == app.user or app.user.roles[0] is same as("ROLE_ADMIN") %}
                     <td scope="row" class="btn-group-vertical">
                         <a href="{{ path('event.edit', { id: event.id })}}" class="btn btn-outline-primary btn-sm">Modifier</a>
@@ -53,6 +52,5 @@
     {% else %}
         <div class="mt-4">Aucun évènement n'est disponible.</div>
     {% endif %}
-    {% include "partials/_push.html.twig" %}
     </div>
 {% endblock %}

@@ -1,15 +1,15 @@
 <nav class="navbar navbar-expand-sm bg-body-tertiary sticky-top">
     <div class="container-fluid">
         <div class="navbar-collapse" id="navbarColor04">
-            <form id="searchMapForm" class="d-flex form-inline">
-                <div class="input-group">
+            <form id="searchMapForm" class="d-flex form-inline flex-nowrap">
+                <div id="searchTypeDiv" class="input-group">
                     <label class="m-2" for="searchType">Je recherche des</label>
                     <select class="form-select m-2" id="searchType">
                         <option value="player">joueurs</option>
                         <option value="event">évènements</option>
                     </select>
                 </div>
-                <div class="input-group">
+                <div id="gameDiv" class="input-group">
                     <label class="m-2" for="searchGame">pour le jeu</label>
                     <select class="form-select m-2" id="searchGame">
                         {% for game in app.user.games|sort((a, b) => a.gameName <=> b.gameName) %}
@@ -17,7 +17,9 @@
                         {% endfor %}
                     </select>
                 </div>
-                <button id="submitButton" class="btn btn-outline-primary my-2 my-sm-0" type="submit">Rechercher</button>
+                <div id="submitDiv" class="input-group">
+                    <button id="submitButton" class="btn btn-outline-primary my-2 my-sm-0" type="submit">Rechercher</button>
+                </div>
             </form>
         </div>
     </div>

@@ -12,6 +12,7 @@
         "doctrine/doctrine-bundle": "^2.10",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.16",
+        "easycorp/easyadmin-bundle": "^4.7",
         "friendsofsymfony/jsrouting-bundle": "^3.3",
         "karser/karser-recaptcha3-bundle": "^0.1.24",
         "knplabs/knp-paginator-bundle": "^6.2",

@@ -4,20 +4,28 @@ namespace App\Controller;
 
 use App\Entity\Contact;
 use App\Form\ContactType;
+use App\Repository\UserRepository;
+use App\Service\MailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 #[IsGranted('ROLE_USER', message: "Vous n'avez pas l'autorisation d'accéder à cette page.")]
 class ContactController extends AbstractController
 {
+    /**
+     * Allow a user to send a contact form to an admin
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @param MailService $mailService
+     * @return Response
+     */
     #[Route('/contact', name: 'contact.index', methods: ['GET', 'POST'])]
-    public function index(Request $request, EntityManagerInterface $manager, MailerInterface $mailer): Response
+    public function index(Request $request, EntityManagerInterface $manager, MailService $mailService): Response
     {
         $contact = new Contact();
         $contact->setName($this->getUser()->getName())
@@ -33,12 +41,12 @@ class ContactController extends AbstractController
             $manager->flush();
 
             // Send email to the admin to notify the request
-            $email = (new TemplatedEmail())
-            ->from($contact->getEmail())
-            ->to('bca.cordier@gmail.com')
-            ->subject($contact->getTitle())
-            ->htmlTemplate('emails/contact.html.twig');
-            $mailer->send($email);
+            $mailService->sendMail(
+                $contact->getEmail(),
+                'bca.cordier@gmail.com',
+                'Vous avez reçu une nouvelle requête.',
+                'emails/contact.html.twig'
+            );
 
             $this->addFlash(
                 'success',
@@ -53,5 +61,21 @@ class ContactController extends AbstractController
         return $this->render('pages/contact/index.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * Allow a admin to respond to a contact form
+     *
+     * @param string $email
+     * @param UserRepository $userRepository
+     * @return Response
+     */
+    #[Route('/contact/answer/{email}', name: 'contact.answer', methods: ['GET', 'POST'])]
+    public function answer(string $email, UserRepository $userRepository): Response
+    {
+        $user = $userRepository->findBy(['email' => $email]);
+        $id = $user[0]->getId();
+
+        return $this->redirectToRoute('message.redirect', ['id' => $id]);
     }
 }

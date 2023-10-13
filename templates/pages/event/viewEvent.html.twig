@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
 {% set showEventNav = true %}
-{% set showFooter = true %}
 
 {% block title %}Games & Friends - {{event.name}}{% endblock %}
 
@@ -75,7 +74,6 @@
             </tr>
             {% endfor %}
         </table>
-        <a href="#top" class="btn btn-outline-primary mt-2">Revenir en haut de la page</a>
-        {% include "partials/_push.html.twig" %}
+        <a href="#top" class="btn btn-outline-primary mt-2 mb-4">Revenir en haut de la page</a>
     </div>
 {% endblock %}

@@ -5,7 +5,7 @@
 {% block body %}
     <div class="container">
         <h1 class="mt-4">Inscription</h1>
-        <a href="{{ path('home.index') }}" class="btn btn-outline-primary">
+        <a href="{{ path('home.index') }}" class="btn btn-outline-primary mt-4 mb-4">
             Revenir à l'accueil
         </a>
 
@@ -80,7 +80,6 @@
         </div>
 
         {{ form_end(form) }}
-        {% include "partials/_push.html.twig" %}
     </div>
     <script src="{{ asset('js/locationScript.js') }}"></script>
 {% endblock %}

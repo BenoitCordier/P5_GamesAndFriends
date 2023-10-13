@@ -31,7 +31,7 @@ class MessageType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-outline-primary mt-4'
+                    'class' => 'btn btn-outline-primary mt-4 mb-4'
                 ],
                 'label' => 'Valider'
             ])

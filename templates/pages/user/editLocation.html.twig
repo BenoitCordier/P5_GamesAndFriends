@@ -1,5 +1,4 @@
 {% extends 'base.html.twig' %}
-{% set showFooter = true %}
 
 {% block title %}Games & Friends - Modifier mon adresse{% endblock %}
 
@@ -8,7 +7,7 @@
         <h1 class="mt-4">
             Modifier mon adresse
         </h1>
-        <a href="{{ path('user.index', { id: app.user.id }) }}" class="btn btn-outline-primary">
+        <a href="{{ path('user.index', { id: app.user.id }) }}" class="btn btn-outline-primary mt-4 mb-4">
             Revenir en arrière
         </a>
         {{ form_start(form) }}
@@ -26,7 +25,6 @@
             {{ form_row(form.submit) }}
         </div>
         {{ form_end(form) }}
-        {% include "partials/_push.html.twig" %}
     </div>
     <script src="{{ asset('js/locationScript.js') }}"></script>
 {% endblock %}

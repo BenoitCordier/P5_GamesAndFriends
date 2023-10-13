@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\SigninType;
 use App\Repository\UserRepository;
+use App\Service\MailService;
 use Symfony\Component\Mime\Address;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -79,7 +80,7 @@ class SecurityController extends AbstractController
      * @return Response
      */
     #[Route('/signin', name: 'security.signin', methods: ['GET', 'POST'])]
-    public function signin(Request $request, EntityManagerInterface $manager, MailerInterface $mailer): Response
+    public function signin(Request $request, EntityManagerInterface $manager, MailService $mailService): Response
     {
         $user = new User();
 
@@ -95,15 +96,13 @@ class SecurityController extends AbstractController
             $manager->flush();
 
             // Send email to the user to notify the registration
-            $email = (new TemplatedEmail())
-            ->from(new Address('gamesandfriends@gamesandfriends.com', 'Games & Friends'))
-            ->to($user->getEmail())
-            ->subject('Votre inscription sur Games & Friends')
-            ->htmlTemplate('emails/registration.html.twig')
-            ->context([
-                'user' => $user,
-            ]);
-            $mailer->send($email);
+            $mailService->sendMail(
+                'gamesandfriends@gamesandfriends.com',
+                $user->getEmail(),
+                'Votre inscription sur Games & Friends.',
+                'emails/registration.html.twig',
+                ['user' => $user]
+            );
 
             $this->addFlash(
                 'success',

@@ -19,28 +19,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class EventController extends AbstractController
 {
     /**
-     * Display all the event in the app
-     *
-     * @param EventRepository $repository
-     * @param PaginatorInterface $paginator
-     * @param Request $request
-     * @return Response
-     */
-    #[Route('/event', name: 'event.index', methods: ['GET'])]
-    public function index(EventRepository $repository, PaginatorInterface $paginator, Request $request): Response
-    {
-        $events = $paginator->paginate(
-            $repository->findAll(),
-            $request->query->getInt('page', 1),
-            10
-        );
-
-        return $this->render('pages/event/index.html.twig', [
-            'events' => $events
-        ]);
-    }
-
-    /**
      * Display a single event
      *
      * @param Event $event

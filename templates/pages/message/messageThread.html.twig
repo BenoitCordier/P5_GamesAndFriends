@@ -1,5 +1,4 @@
 {% extends "base.html.twig" %}
-{% set showFooter = true %}
 
 {% block title %}Games & Friends - Conversation entre {{ messageThread.firstUser }} et {{ messageThread.secondUser }}{% endblock %}
 
@@ -46,7 +45,6 @@
             {{ form_row(form.submit) }}
         </div>
         {{ form_end(form) }}
-        {% include "partials/_push.html.twig" %}
     </div>
     <script src="{{ asset('js/messageThread.js') }}"></script>
 {% endblock %}
