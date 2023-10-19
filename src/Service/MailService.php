@@ -30,5 +30,4 @@ class MailService
 
         $this->mailer->send($email);
     }
-
 }

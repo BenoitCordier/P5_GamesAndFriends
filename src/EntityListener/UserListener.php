@@ -46,8 +46,4 @@ class UserListener
             $user->setPlainPassword(null);
         }
     }
-
-
-
-
 }

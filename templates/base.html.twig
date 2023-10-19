@@ -12,10 +12,7 @@
             href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.1/dist/lux/bootstrap.min.css"
             rel="stylesheet">
             <!-- CSS -->
-            <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
-            <link rel="stylesheet" type="text/css" media="(min-width: 1025px) and (max-width: 1200px)" href="{{ asset('css/medres.css') }}">
-            <link rel="stylesheet" type="text/css" media="(min-width: 769px) and (max-width: 1024px)" href="{{ asset('css/lowres.css') }}">
-            <link rel="stylesheet" type="text/css" media="(max-width: 768px)" href="{{ asset('css/mobres.css') }}">
+            {{ encore_entry_link_tags('app') }}
             <!-- Leaflet -->
             <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
             <!-- Geoapify -->

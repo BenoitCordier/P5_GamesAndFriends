@@ -146,9 +146,14 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $games = $form->getData();
+            $userGames = $user->getGames();
             foreach ($games as $game) {
                 foreach ($game->getIterator() as $u => $uniqueGame) {
-                    $user->addGame($uniqueGame);
+                    if ($userGames->contains($game)) {
+                        // do nothing
+                    } else {
+                        $user->addGame($uniqueGame);
+                    }
                 }
             }
             $user->setUpdatedAt(new \DateTimeImmutable());

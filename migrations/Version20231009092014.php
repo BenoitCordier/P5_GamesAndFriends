@@ -28,8 +28,8 @@ final class Version20231009092014 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_B6BD307F8829462F ON message (message_thread_id)');
         $this->addSql('ALTER TABLE `event` CHANGE `event_name` `name` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;');
         $this->addSql('ALTER TABLE `event` CHANGE `event_location` `location` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL');
-        $this->addSql('ALTER TABLE `event` CHANGE `user_name` `name` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;');
-        $this->addSql('ALTER TABLE `event` CHANGE `user_location` `location` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL');
+        $this->addSql('ALTER TABLE `user` CHANGE `user_name` `name` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;');
+        $this->addSql('ALTER TABLE `user` CHANGE `user_location` `location` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL');
     }
 
     public function down(Schema $schema): void
