@@ -1,0 +1,34 @@
+import: 
+  - recipe/symfony.php
+
+config:
+  repository: 'https://github.com/BenoitCordier/P5_GamesAndFriends.git'
+  remote_user: u94526931
+  deploy_path: '~/gamesandfriends'
+
+hosts:
+  prod:
+    hostname: 'home749548484.1and1-data.host'
+
+# Configuration des variables d'environnement
+environment:
+  APP_ENV: prod
+  APP_SECRET: d7c8aa221b64edf0316416975317dcf7
+  DATABASE_URL: mysql://dbu1461773:21104157t!@db5014669052.hosting-data.io/dbs12187748
+
+  MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
+
+  GOOGLE_RECAPTCHA_SITE_KEY: 6Lcc8pYoAAAAAMGbNmFG-qiMLslrPHOhoZPIGknb
+  GOOGLE_RECAPTCHA_SECRET: 6Lcc8pYoAAAAAK_CnuNOodO4eAd9ndtIwBbad7NN
+
+  RECAPTCHA3_KEY: 6Lcc8pYoAAAAAMGbNmFG-qiMLslrPHOhoZPIGknb
+  RECAPTCHA3_SECRET: 6Lcc8pYoAAAAAK_CnuNOodO4eAd9ndtIwBbad7NN
+
+
+# Liste des tâches de déploiement
+tasks:
+  build:
+    - run: uptime  
+
+after:
+  deploy:failed: deploy:unlock
