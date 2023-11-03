@@ -61,7 +61,8 @@ class EventType extends AbstractType
                     'class' => 'form-label mt-4'
                 ],
                 'constraints' => [
-                    new Assert\NotBlank()
+                    new Assert\NotBlank(),
+                    new Assert\GreaterThan('now')
                 ]
 
             ])
@@ -75,7 +76,10 @@ class EventType extends AbstractType
                     'class' => 'form-label mt-4'
                 ],
                 'constraints' => [
-                    new Assert\NotBlank()
+                    new Assert\NotBlank(),
+                    new Assert\GreaterThan([
+                        'propertyPath' => 'parent.all[eventStartAt].data'
+                    ])
                 ]
             ])
             ->add('location', TextType::class, [

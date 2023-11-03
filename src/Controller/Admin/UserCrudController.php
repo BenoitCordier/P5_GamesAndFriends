@@ -37,6 +37,7 @@ class UserCrudController extends AbstractCrudController
                 ->setFormTypeOption('disabled', 'disabled'),
             TextField::new('firstName'),
             TextField::new('lastName'),
+            TextField::new('location'),
             ArrayField::new('roles')
         ];
     }

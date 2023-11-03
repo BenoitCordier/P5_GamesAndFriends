@@ -99,7 +99,7 @@ class Map
                     return Promise.reject(result)
                 } else {
                     // Get longitude/latitude
-                    const queryResult = await getAsyncResult(`${url}&id=${result.body.id}`, 1 * 1000 /* 1 second */, 100);
+                    const queryResult = await getAsyncResult(`${url}&id=${result.body.id}`, 1 * 1000 /* 1 second */, 2);
                     let coordinates = queryResult.map( ({lat, lon}) => ({lat, lon}) );
                     coordinates.forEach(function(e){
                         if (typeof e === "object" ){
