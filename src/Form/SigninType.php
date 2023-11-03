@@ -105,7 +105,7 @@ class SigninType extends AbstractType
                     'maxlenght' => '255',
                     'id' => 'signin_adress',
                 ],
-                'label' => "Adresse",
+                'label' => "Adresse postale",
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
@@ -123,12 +123,17 @@ class SigninType extends AbstractType
                 'choice_label' => 'gameName',
                 'multiple' => true,
                 'expanded' => true,
+                'required' => true,
                 'attr' => [
                     'class' => 'form-check'
                 ],
                 'label' => "Jeux",
                 'label_attr' => [
                     'class' => 'form-label mt-4'
+                ],
+                'constraints' => [
+                    new Assert\NotNull(),
+                    new Assert\NotBlank()
                 ]
             ])
             ->add('submit', SubmitType::class, [

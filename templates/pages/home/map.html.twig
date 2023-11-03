@@ -18,6 +18,9 @@
 						<div class="modal-body">
 							<p>Veuillez modifier votre recherche avant de recommencer.</p>
 						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-outline-primary my-2 my-sm-0" id="closeBtn">Fermer</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -38,6 +41,27 @@
 				</div>
 			</div>
 		</div>
+		{% if games == false %}
+		<div class="modal" style="display: block;">
+			<div class="modal-back"></div>
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Vous n'avez aucun jeu d'enregistré !</h5>
+						</div>
+						<div class="modal-body">
+							<p>Veuillez choisir au moins un jeu sur votre profil avant de continuer.</p>
+						</div>
+						<div class="modal-footer">
+							<a href="{{ path('user.index', { id: app.user.id }) }}" class="btn btn-outline-primary mt-4 mb-4">
+								Aller à mon profil
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endif %}
 	</div>
 	<script src="{{ asset('js/mapScript.js') }}"></script>
 {% endblock %}

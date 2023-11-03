@@ -27,6 +27,18 @@ class HomeController extends AbstractController
     #[Route('/map', name: 'home.map', methods: ['GET'])]
     public function map(): Response
     {
-        return $this->render('pages/home/map.html.twig');
+        $games = $this->getUser()->getGames();
+        if ($games->isEmpty()) {
+            $games = false;
+        } else {
+            $games = true;
+        }
+
+        return $this->render(
+            'pages/home/map.html.twig',
+            [
+            'games' => $games
+        ]
+        );
     }
 }

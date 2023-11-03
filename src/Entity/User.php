@@ -75,6 +75,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private \DateTimeImmutable $createdAt;
 
     #[ORM\ManyToMany(targetEntity: Game::class, inversedBy: 'users')]
+    #[Assert\NotNull()]
+    #[Assert\NotBlank]
     private Collection $games;
 
     #[ORM\Column]

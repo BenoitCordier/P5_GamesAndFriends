@@ -24,6 +24,8 @@ class Map
         this.createMap();
         this.searchMapForm = document.getElementById('searchMapForm');
         this.searchMapForm.addEventListener('submit', (event) => {event.preventDefault(); document.getElementById('modalSearch').style.display = 'block'; document.getElementById('modalError').style.display = 'none'; return this.search()}, false);
+        this.closeModalErrorBtn = document.getElementById('closeBtn');
+        this.closeModalErrorBtn.addEventListener('click', (event) => {event.preventDefault(); document.getElementById('modalError').style.display = 'none';})
     }
 
     // Map creation
@@ -109,28 +111,32 @@ class Map
                         coordinates[j].name = data[j].name;
                         coordinates[j].id = data[j].id;
                     }
-                    console.log(data);
                     // Generate marker
                     // Remove previous markers
                     this.markerClusterGroup.clearLayers();
                     // Add each markers to the cluster
                     if (this.searchStyle === 'player') {
                         for (let i = 0; i < coordinates.length; i++) {
-                            console.log(coordinates[i]);
-                            this.markerClusterGroup.addLayer(L.marker([coordinates[i].lat, coordinates[i].lon], {
-                                icon: this.icon
-                            })
-                            .bindPopup('<h6 class="mt-4" style="text-align: center">' + coordinates[i].name + '</h6> <div style="display:flex; justify-content:center; align-items:center"><a class="btn btn-outline-primary btn-sm mt-2" target="_blank" style="color: black" onmouseover="this.style.color=\'white\';" onmouseout="this.style.color=\'black\';" href="user/viewProfile/' + coordinates[i].id + '" role="button">Voir le profil</a></div>')
-                            .openPopup());
+                            if (/^-?[0-9]{1,3}(?:\.[0-9]{1,10})?$/.test(coordinates[i].lat) && /^-?[0-9]{1,3}(?:\.[0-9]{1,10})?$/.test(coordinates[i].lon)) {
+                                this.markerClusterGroup.addLayer(L.marker([coordinates[i].lat, coordinates[i].lon], {
+                                    icon: this.icon
+                                })
+                                .bindPopup('<h6 class="mt-4" style="text-align: center">' + coordinates[i].name + '</h6> <div style="display:flex; justify-content:center; align-items:center"><a class="btn btn-outline-primary btn-sm mt-2" target="_blank" style="color: black" onmouseover="this.style.color=\'white\';" onmouseout="this.style.color=\'black\';" href="user/viewProfile/' + coordinates[i].id + '" role="button">Voir le profil</a></div>')
+                                .openPopup());
+                            }
                         }
                     }
                     if (this.searchStyle === 'event') {
                         for (let i = 0; i < coordinates.length; i++) {
-                            this.markerClusterGroup.addLayer(L.marker([coordinates[i].lat, coordinates[i].lon], {
-                                icon: this.icon
-                            })
-                            .bindPopup('<h6 class="mt-4" style="text-align: center">' + coordinates[i].name + '</h6> <div style="display:flex; justify-content:center; align-items:center"><a class="btn btn-outline-primary btn-sm mt-2" target="_blank" style="color: black" onmouseover="this.style.color=\'white\';" onmouseout="this.style.color=\'black\';" href="event/viewEvent/' + coordinates[i].id + '" role="button">Détails de l&#39;évènement</a></div>')
-                            .openPopup());
+                            if (/^-?[0-9]{1,3}(?:\.[0-9]{1,10})?$/.test(coordinates[i].lat) && /^-?[0-9]{1,3}(?:\.[0-9]{1,10})?$/.test(coordinates[i].lon)) {
+                                this.markerClusterGroup.addLayer(L.marker([coordinates[i].lat, coordinates[i].lon], {
+                                    icon: this.icon
+                                })
+                                .bindPopup('<h6 class="mt-4" style="text-align: center">' + coordinates[i].name + '</h6> <div style="display:flex; justify-content:center; align-items:center"><a class="btn btn-outline-primary btn-sm mt-2" target="_blank" style="color: black" onmouseover="this.style.color=\'white\';" onmouseout="this.style.color=\'black\';" href="event/viewEvent/' + coordinates[i].id + '" role="button">Détails de l&#39;évènement</a></div>')
+                                .openPopup());
+                            } else {
+                                // do nothing
+                            }
                         }
                     }
                     this.map.addLayer(this.markerClusterGroup);
@@ -158,7 +164,6 @@ class Map
             });
 
             function repeatUntilSuccess(resolve, reject, attempt) {
-                console.log("Attempt: " + attempt);
                 fetch(url)
                 .then(getBodyAndStatus)
                 .then(result => {

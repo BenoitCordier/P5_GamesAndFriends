@@ -5,14 +5,6 @@
 # to each configured DirectoryIndex file (e.g. index.php, index.html, index.pl).
 DirectoryIndex index.php
 
-# Force https
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-# Force no www
-RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC] 
-RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
-
 # By default, Apache does not evaluate symbolic links if you did not enable this
 # feature in your server configuration. Uncomment the following line if you
 # install assets as symlinks or if you experience problems related to symlinks
