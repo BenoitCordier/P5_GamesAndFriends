@@ -104,16 +104,20 @@ class EventController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $event = $form->getData();
             $event->setEventAdmin($this->getUser());
+            $eventStartAt = $event->getEventStartAt();
+            $eventEndAt = $event->getEventEndAt();
 
-            $manager->persist($event);
-            $manager->flush();
+            if ($eventEndAt > $eventStartAt) {
+                $manager->persist($event);
+                $manager->flush();
 
-            $this->addFlash(
-                'success',
-                'Evènement ajouté avec succès !'
-            );
+                $this->addFlash(
+                    'success',
+                    'Evènement ajouté avec succès !'
+                );
 
-            return $this->redirectToRoute('event.myevent');
+                return $this->redirectToRoute('event.myevent');
+            }
         }
 
         return $this->render('pages/event/new.html.twig', [
@@ -141,16 +145,20 @@ class EventController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $event = $form->getData();
+            $eventStartAt = $event->getEventStartAt();
+            $eventEndAt = $event->getEventEndAt();
 
-            $manager->persist($event);
-            $manager->flush();
+            if ($eventEndAt > $eventStartAt) {
+                $manager->persist($event);
+                $manager->flush();
 
-            $this->addFlash(
-                'success',
-                'Evènement modifié avec succès !'
-            );
+                $this->addFlash(
+                    'success',
+                    'Evènement modifié avec succès !'
+                );
 
-            return $this->redirectToRoute('event.myevent');
+                return $this->redirectToRoute('event.myevent');
+            }
         }
 
         return $this->render('pages/event/edit.html.twig', [

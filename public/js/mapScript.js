@@ -99,7 +99,7 @@ class Map
                     return Promise.reject(result)
                 } else {
                     // Get longitude/latitude
-                    const queryResult = await getAsyncResult(`${url}&id=${result.body.id}`, 1 * 1000 /* 1 second */, 2);
+                    const queryResult = await getAsyncResult(`${url}&id=${result.body.id}`, 1 * 1000 /* 1 second */, 50);
                     let coordinates = queryResult.map( ({lat, lon}) => ({lat, lon}) );
                     coordinates.forEach(function(e){
                         if (typeof e === "object" ){
@@ -171,6 +171,8 @@ class Map
                         resolve(result.body);
                     } else if (attempt >= maxAttempt) {
                         reject("Max amount of attempt achived");
+                        document.getElementById('modalSearch').style.display = 'none';
+                        document.getElementById('modalError').style.display = 'block';
                     } else if (result.status === 202) {
                         // Check again after timeout
                         setTimeout(() => {
@@ -178,7 +180,9 @@ class Map
                         }, timeout);
                     } else {
                         // Something went wrong
-                        reject(result.body)
+                        reject(result.body);
+                        document.getElementById('modalSearch').style.display = 'none';
+                        document.getElementById('modalError').style.display = 'block';
                     }
                 })
                 .catch(err => reject(err));

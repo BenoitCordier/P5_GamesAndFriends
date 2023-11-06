@@ -5,7 +5,9 @@
 {% block body %}
     <div class="container mt-4">
         <h1 class="mt-4">Profil de {{user.name}}</h1>
+        {% if not user == app.user %}
         <a class="btn btn-outline-primary mt-4 mb-4" href="{{ path('message.redirect', { id: user.id })}}" role="button">Contacter {{user.name}}</a>
+        {% endif %}
         <table class="table">
             <tr>
                 <th scope="row" colspan="2"><h4>Informations générales</h4></th>

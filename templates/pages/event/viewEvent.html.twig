@@ -15,10 +15,12 @@
         {% if event.eventPlayers.contains(app.user) %}
         <a class="btn btn-outline-primary m-4" href="{{ path('event.quit', { id: app.user.id, eventId: event.id })}}">Se désinscrire</a>
         {% else %}
-        {% if playerCount > 0 %}
-        <a class="btn btn-outline-primary m-4" href="{{ path('event.join', { id: app.user.id, eventId: event.id })}}" role="button">S'inscrire</a>
-        {% endif %}
-        <a class="btn btn-outline-primary mt-4 mb-4 mr-4" href="{{ path('message.redirect', { id: event.eventAdmin.id })}}" role="button">Contacter l'organisateur</a>
+            {% if playerCount > 0 %}
+            <a class="btn btn-outline-primary m-4" href="{{ path('event.join', { id: app.user.id, eventId: event.id })}}" role="button">S'inscrire</a>
+            {% endif %}
+            {% if not event.eventAdmin == app.user %}
+            <a class="btn btn-outline-primary mt-4 mb-4 mr-4" href="{{ path('message.redirect', { id: event.eventAdmin.id })}}" role="button">Contacter l'organisateur</a>
+            {% endif %}
         {% endif %}
         </div>
         <table class="table">
